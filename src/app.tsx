@@ -2,8 +2,9 @@
 import { ThemeProvider } from '@material-ui/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { getVideoId } from './utils/yt.utils';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
-import { Recommendations } from './containers/Recommendations';
+import { Recommendations } from './components/injected/VideoRecommendations';
 // import { Recommendations } from './containers/Recommendations';
 import { YCAITheme } from './theme';
 
@@ -267,13 +268,21 @@ if (ytRelatedVideoNode !== null && ycRecommendations === null) {
   ycMainNode.id = 'yc-recommendations';
   ytRelatedVideoNode.prepend(ycMainNode);
 
+  const videoId = getVideoId(window.location.href);
+
   ReactDOM.render(
     <React.StrictMode>
       <ErrorBoundary>
         <ThemeProvider theme={YCAITheme}>
-          <div style={{ marginBottom: 40 }}>
-            <Recommendations />
-          </div>
+          {videoId !== undefined ? (
+            <div style={{ marginBottom: 40 }}>
+              <Recommendations
+                queries={{ videoRecommendations: { videoId } }}
+              />
+            </div>
+          ) : (
+            <div>Video not found</div>
+          )}
         </ThemeProvider>
       </ErrorBoundary>
     </React.StrictMode>,
@@ -284,3 +293,4 @@ if (ytRelatedVideoNode !== null && ycRecommendations === null) {
 // bo.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 //   console.log('tab updated', { tabId, changeInfo, tab });
 // });
+

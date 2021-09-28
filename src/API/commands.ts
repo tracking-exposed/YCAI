@@ -23,7 +23,7 @@ export const registerCreatorChannel = command(
               type: ConfigUpdate.value,
               payload: {
                 ...settings,
-                channelCreatorId: channelId
+                channelCreatorId: channelId,
               },
             })
           )
@@ -89,8 +89,7 @@ export const updateRecommendationForVideo = command(
 );
 
 export const updateSettings = command(
-  (payload: AccountSettings) => {
-    return sendMessage({ type: ConfigUpdate.value, payload: payload });
-  },
+  (payload: AccountSettings) =>
+    sendMessage({ type: ConfigUpdate.value, payload: payload }),
   { accountSettings, creatorRecommendations, creatorVideos }
 );

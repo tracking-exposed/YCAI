@@ -78,7 +78,7 @@ module.exports = {
       main: path.resolve(__dirname, 'src/index.tsx'),
       app: path.resolve(__dirname, 'src/app.tsx'),
       popup: path.resolve(__dirname, 'src/popup.tsx'),
-      background: path.resolve(__dirname, 'src/chrome/background/index.ts'),
+      background: path.resolve(__dirname, 'src/background/index.ts'),
     };
 
     // override default html-webpack-plugin for 'all' chunks

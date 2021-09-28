@@ -73,3 +73,14 @@ export const currentVideoRecommendations = compose(
     return TE.right([]);
   }, available)
 );
+
+export const videoRecommendations = queryStrict(
+  ({
+    videoId,
+  }: {
+    videoId: string;
+  }): TE.TaskEither<Error, Recommendation[]> => {
+    return fetchTE(`/v3/video/${videoId}/recommendations`);
+  },
+  available
+);
