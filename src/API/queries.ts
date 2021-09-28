@@ -4,10 +4,10 @@ import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { AccountSettings } from 'models/AccountSettings';
 import { LocalLookup } from 'models/MessageRequest';
-import { Video } from '../../../models/Video';
-import { Recommendation } from '../../../models/Recommendation';
-import { catchRuntimeLastError } from '../../../providers/browser.provider';
-import { bo } from '../../../utils/browser.utils';
+import { Video } from '../models/Video';
+import { Recommendation } from '../models/Recommendation';
+import { catchRuntimeLastError } from '../providers/browser.provider';
+import { bo } from '../utils/browser.utils';
 import { fetchTE } from './HTTPAPI';
 
 export const CREATOR_CHANNEL_KEY = 'creator-channel';
@@ -44,7 +44,7 @@ export const creatorRecommendations = compose(
 export const creatorVideos = compose(
   accountSettings,
   queryStrict((settings): TE.TaskEither<Error, Video[]> => {
-    if (settings.channelCreatorId !== undefined) {
+    if (settings.channelCreatorId !== null) {
       return fetchTE(`/v3/creator/videos/${settings.channelCreatorId}`);
     }
     return TE.right([]);
@@ -54,7 +54,7 @@ export const creatorVideos = compose(
 export const recommendedChannels = compose(
   product({ accountSettings, params: param() }),
   queryStrict(({ accountSettings, params }) => {
-    if (accountSettings.channelCreatorId !== undefined) {
+    if (accountSettings.channelCreatorId !== null) {
       return fetchTE(
         `/v3/profile/recommendations/${accountSettings.channelCreatorId}`,
         params

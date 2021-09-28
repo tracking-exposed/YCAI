@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from '@material-ui/core';
 import React from 'react';
-import { addRecommendation } from '../API/commands';
+import { addRecommendation } from '../../API/commands';
 
 const Fetcher: React.FC = () => {
   const completed = React.useCallback(async (e): Promise<void> => {

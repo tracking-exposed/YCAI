@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CircularProgress } from '@material-ui/core';
 
-export const FullSizeLoader = () => {
+export const FullSizeLoader: React.FC = () => {
   return (
     <div
       style={{
@@ -19,4 +19,4 @@ export const FullSizeLoader = () => {
   );
 };
 
-export const LazyFullSizeLoader = () => <FullSizeLoader />;
+export const LazyFullSizeLoader = (): React.ReactElement<any> => <FullSizeLoader />;

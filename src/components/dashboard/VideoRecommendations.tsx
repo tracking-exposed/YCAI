@@ -4,10 +4,10 @@ import * as QR from 'avenger/lib/QueryResult';
 import { useQueries } from 'avenger/lib/react';
 import { pipe } from 'fp-ts/lib/function';
 import React from 'react';
-import { updateRecommendationForVideo } from '../API/commands';
-import * as queries from '../API/queries';
-import { ErrorBox } from './common/ErrorBox';
-import { LazyFullSizeLoader } from './common/FullSizeLoader';
+import { updateRecommendationForVideo } from '../../API/commands';
+import * as queries from '../../API/queries';
+import { ErrorBox } from '../common/ErrorBox';
+import { LazyFullSizeLoader } from '../common/FullSizeLoader';
 
 export const VideoRecommendations: React.FC = () => {
   return pipe(

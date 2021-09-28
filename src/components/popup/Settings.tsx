@@ -1,4 +1,4 @@
-import { updateSettings } from '@chrome/dashboard/API/commands';
+import { updateSettings } from 'API/commands';
 import {
   FormHelperText,
   FormLabel,
@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import * as React from 'react';
-import { AccountSettings } from '../../../models/AccountSettings';
+import { AccountSettings } from '../../models/AccountSettings';
 
 const useStyles = makeStyles((theme) => ({
   divider: {

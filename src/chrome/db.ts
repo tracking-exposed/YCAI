@@ -26,11 +26,10 @@ const backendSet = <A>(
   key: string,
   value: A
 ): TE.TaskEither<chrome.runtime.LastError, void> => {
-  // console.log(`Save ${JSON.stringify(value)} as ${key}`);
+  // eslint-disable-next-line
+  console.log(`Save ${JSON.stringify(value)} as ${key}`);
   return pipe(
-    TE.fromIO<undefined, chrome.runtime.LastError>(() =>
-      (backend as any).set({ [key]: value })
-    ),
+    TE.tryCatch(() => backend.set({ [key]: value }), E.toError),
     TE.chain(catchRuntimeLastError)
   );
 };
@@ -50,52 +49,18 @@ function get<A>(
 ): TE.TaskEither<chrome.runtime.LastError, A | undefined> {
   return pipe(
     backendGet([key]),
-    TE.map((val) => {
-      // console.log(`Got value from ${key}`, val);
-      return val;
-    }),
     TE.map((val) => (val?.[key] !== undefined ? val[key] : val))
   );
-  // return new Promise((resolve, reject) => {
-  //   backend.get(key, (val) => {
-  //     if (bo.runtime.lastError !== undefined) {
-  //       reject(bo.runtime.lastError);
-  //     } else if (isEmpty(val) && !isEmpty(setIfMissing)) {
-  //       const newVal = isFunction(setIfMissing)
-  //         ? setIfMissing(key)
-  //         : setIfMissing;
-  //       // eslint-disable-next-line no-console
-  //       console.log('get is empty ', newVal);
-  //       backend.set(newVal, () => resolve(newVal));
-  //     } else {
-  //       // eslint-disable-next-line no-console
-  //       console.log('get returns', val, key, val[key]);
-  //       resolve(isEmpty(val[key]) ? null : val[key]);
-  //     }
-  //   });
-  // });
 }
 
 function set<A>(
   key: string,
   value: A
 ): TE.TaskEither<chrome.runtime.LastError, A> {
-  // eslint-disable-next-line no-console
   return pipe(
     backendSet(key, value),
     TE.map(() => value)
   );
-  // return new Promise((resolve, reject) => {
-  //   const newVal = {};
-  //   newVal[key] = isFunction(value) ? value(key) : value;
-  //   backend.set(newVal, () => {
-  //     if (bo.runtime.lastError) {
-  //       reject(bo.runtime.lastError);
-  //     } else {
-  //       resolve(newVal[key]);
-  //     }
-  //   });
-  // });
 }
 
 function update<A extends object>(

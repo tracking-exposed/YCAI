@@ -2,7 +2,7 @@
 import { ThemeProvider } from '@material-ui/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ErrorBoundary } from './components/ErrorBoundary';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Recommendations } from './containers/Recommendations';
 // import { Recommendations } from './containers/Recommendations';
 import { YCAITheme } from './theme';

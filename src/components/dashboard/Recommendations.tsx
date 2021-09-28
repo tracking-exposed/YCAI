@@ -3,10 +3,10 @@ import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';
 import { pipe } from 'fp-ts/lib/function';
 import React from 'react';
-import { updateRecommendationForVideo } from '../API/commands';
-import { accountSettings, creatorRecommendations } from '../API/queries';
-import { ErrorBox } from './common/ErrorBox';
-import { LazyFullSizeLoader } from './common/FullSizeLoader';
+import { updateRecommendationForVideo } from '../../API/commands';
+import { accountSettings, creatorRecommendations } from '../../API/queries';
+import { ErrorBox } from '../common/ErrorBox';
+import { LazyFullSizeLoader } from '../common/FullSizeLoader';
 import { URLCard } from './URLCard';
 
 const styles = {

@@ -1,6 +1,6 @@
-import { updateSettings } from '@chrome/dashboard/API/commands';
-import { accountSettings } from '@chrome/dashboard/API/queries';
-import { ErrorBox } from '@chrome/dashboard/components/common/ErrorBox';
+import { updateSettings } from 'API/commands';
+import { accountSettings } from 'API/queries';
+import { ErrorBox } from '../common/ErrorBox';
 import {
   Button,
   Card,
@@ -20,7 +20,7 @@ import { formatDistance } from 'date-fns';
 import parseISO from 'date-fns/parseISO';
 import { pipe } from 'fp-ts/lib/function';
 import React from 'react';
-import { config } from '../../../config';
+import { config } from '../../config';
 import Settings from './Settings';
 
 const useStyles = makeStyles((theme) => ({

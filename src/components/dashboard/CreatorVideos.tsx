@@ -5,9 +5,9 @@ import * as Q from 'avenger/lib/Query';
 import { pipe } from 'fp-ts/lib/function';
 import { Video } from 'models/Video';
 import React from 'react';
-import { creatorVideos } from '../API/queries';
-import { ErrorBox } from './common/ErrorBox';
-import { LazyFullSizeLoader } from './common/FullSizeLoader';
+import { creatorVideos } from '../../API/queries';
+import { ErrorBox } from '../common/ErrorBox';
+import { LazyFullSizeLoader } from '../common/FullSizeLoader';
 import { VideoCard } from './VideoCard';
 
 const withQueries = declareQueries({ videos: creatorVideos });

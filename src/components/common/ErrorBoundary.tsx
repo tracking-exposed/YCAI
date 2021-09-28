@@ -1,4 +1,4 @@
-import { ErrorBox } from '@chrome/dashboard/components/common/ErrorBox';
+import { ErrorBox } from './ErrorBox';
 import * as React from 'react';
 
 interface ErrorState {

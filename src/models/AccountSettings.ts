@@ -10,7 +10,7 @@ interface AccountKeys {
  *
  */
 export interface AccountSettings extends AccountKeys {
-  channelCreatorId: string;
+  channelCreatorId: string | null;
   active: boolean;
   ccRecommendations: boolean;
   communityRecommendations: boolean;

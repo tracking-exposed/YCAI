@@ -10,11 +10,11 @@ import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';
 import { pipe } from 'fp-ts/lib/function';
 import React from 'react';
-import { registerCreatorChannel, updateSettings } from './API/commands';
-import * as queries from './API/queries';
-import { ErrorBox } from './components/common/ErrorBox';
-import { LazyFullSizeLoader } from './components/common/FullSizeLoader';
-import { CreatorVideos } from './components/CreatorVideos';
+import { registerCreatorChannel, updateSettings } from '../../API/commands';
+import * as queries from '../../API/queries';
+import { ErrorBox } from '../../components/common/ErrorBox';
+import { LazyFullSizeLoader } from '../common/FullSizeLoader';
+import { CreatorVideos } from './CreatorVideos';
 
 const withQueries = declareQueries({
   accountSettings: queries.accountSettings,
@@ -24,8 +24,7 @@ export const LinkAccount = withQueries(({ queries }) => {
   return pipe(
     queries,
     QR.fold(LazyFullSizeLoader, ErrorBox, ({ accountSettings }) => {
-
-      const [channel, setChannel] = React.useState<string | undefined>(
+      const [channel, setChannel] = React.useState<string | null>(
         accountSettings.channelCreatorId
       );
 
@@ -36,7 +35,7 @@ export const LinkAccount = withQueries(({ queries }) => {
       ): Promise<void> => {
         // this handle the pressing of "Enter" key
         if (e.keyCode === 13) {
-          await registerCreatorChannel(e.currentTarget.value)()
+          await registerCreatorChannel(e.currentTarget.value)();
           // await updateSettings({
           //   ...accountSettings,
           //   edit: {
@@ -52,18 +51,17 @@ export const LinkAccount = withQueries(({ queries }) => {
       const handleChannelSubmit: React.MouseEventHandler<HTMLButtonElement> =
         async () => {
           if (inputRef.current?.lastChild !== null) {
-            await updateSettings({
-              ...accountSettings,
-              channelCreatorId: (inputRef.current?.lastChild as any).value,
-            })();
+            await registerCreatorChannel(
+              (inputRef.current?.lastChild as any).value
+            )();
           }
         };
 
       const handleChannelDelete = async (): Promise<void> => {
-        setChannel(undefined);
+        setChannel(null);
         await updateSettings({
           ...accountSettings,
-          edit: null,
+          channelCreatorId: null,
         })();
       };
 
