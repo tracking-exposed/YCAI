@@ -4,11 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import React from 'react';
-import Advanced from './components/dashboard/Advanced';
-import { TabPanel } from './components/TabPanel';
-import { LinkAccount } from './components/dashboard/LinkAccount';
-import { ManageVideosPanel } from './components/dashboard/ManageVideosPanel';
-import { YCAInalitics } from './components/dashboard/YCAInalitics';
+import Advanced from './Advanced';
+import { TabPanel } from '../TabPanel';
+import { LinkAccount } from './LinkAccount';
+import { ManageVideosPanel } from './ManageVideosPanel';
+import { YCAInalitics } from './YCAInalitics';
 
 function a11yProps(index: number): { [key: string]: string } {
   return {
