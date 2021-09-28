@@ -20,7 +20,6 @@ export const fetchTE = <T = any>(
     TE.tryCatch(
       () =>
         client(url, params).then((resp) => {
-
           if (resp.status === 400) {
             return Promise.reject(new Error('Bad Request'));
           }

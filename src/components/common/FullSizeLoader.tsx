@@ -19,4 +19,6 @@ export const FullSizeLoader: React.FC = () => {
   );
 };
 
-export const LazyFullSizeLoader = (): React.ReactElement<any> => <FullSizeLoader />;
+export const LazyFullSizeLoader = (): React.ReactElement<any> => (
+  <FullSizeLoader />
+);

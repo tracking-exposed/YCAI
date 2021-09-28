@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const YCAInalitics: React.FC = () =>  {
+export const YCAInalitics: React.FC = () => {
   const classes = useStyles();
   return (
     <Grid container alignItems="center">
@@ -64,4 +64,4 @@ export const YCAInalitics: React.FC = () =>  {
       </Grid>
     </Grid>
   );
-}
+};

@@ -1,4 +1,4 @@
-import { Video } from "./Video";
+import { Video } from './Video';
 
 interface AccountKeys {
   publicKey: string;
@@ -20,5 +20,5 @@ export interface AccountSettings extends AccountKeys {
   playhide: boolean;
   alphabeth: boolean;
   ux: boolean;
-  edit: Video | null
+  edit: Video | null;
 }

@@ -293,4 +293,3 @@ if (ytRelatedVideoNode !== null && ycRecommendations === null) {
 // bo.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 //   console.log('tab updated', { tabId, changeInfo, tab });
 // });
-
