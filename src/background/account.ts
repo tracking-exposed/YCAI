@@ -3,12 +3,12 @@ import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { ServerLookupResponse } from 'models/MessageResponse';
-import { catchRuntimeLastError } from 'providers/browser.provider';
+import { ServerLookupResponse } from '../models/MessageResponse';
+import { catchRuntimeLastError } from '../providers/browser.provider';
 import nacl from 'tweetnacl';
-import { AccountSettings } from '../../models/AccountSettings';
-import api from '../api';
-import db from '../db';
+import { AccountSettings } from '../models/AccountSettings';
+import api from '../API/api';
+import db from './db';
 
 export const DEFAULT_USER_NAME = 'local';
 

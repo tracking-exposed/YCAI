@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { SyncRequest } from 'models/MessageRequest';
-import api from '../api';
+import { SyncRequest } from '../models/MessageRequest';
+import api from '../API/api';
 
 export const sync = (request: SyncRequest): TE.TaskEither<Error, any> => {
   return pipe(

@@ -1,5 +1,5 @@
-import db from '../db';
-import { bo } from '../../utils/browser.utils';
+import db from './db';
+import { bo } from '../utils/browser.utils';
 
 bo.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'chromeConfig') {

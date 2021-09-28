@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { MessageResponse } from 'models/MessageResponse';
-import { config } from '../../config';
+import { MessageResponse } from '../models/MessageResponse';
+import { config } from '../config';
 import {
   ConfigUpdate,
   LocalLookup,
@@ -9,8 +9,8 @@ import {
   RecommendationsFetch,
   ReloadExtension,
   Sync,
-} from '../../models/MessageRequest';
-import { bo } from '../../utils/browser.utils';
+} from '../models/MessageRequest';
+import { bo } from '../utils/browser.utils';
 import * as accounts from './account';
 import * as development from './reloadExtension';
 import * as sync from './sync';

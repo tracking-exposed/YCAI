@@ -2,7 +2,7 @@ import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 import { config } from '../config';
 import { decodeString, decodeKey } from '../utils';
-import db from './db';
+import db from '../background/db';
 
 function post(apiUrl, data, cookieId) {
   return new Promise((resolve, reject) => {
