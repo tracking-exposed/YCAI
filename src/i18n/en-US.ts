@@ -50,7 +50,7 @@ const resources: CustomTypeOptions['resources'] = {
     contentCreatorRecommendationHint: 'See suggestions by real authors',
     communityRecommendationsLabel: 'Community',
     communityRecommendationsHint: 'Coming soon 🌻',
-    contributeToIndipendentStatsLabel: 'Support independent stats',
+    contributeToIndipendentStatsLabel: 'Independent stats',
     contributeToIndipendentStatsHint:
       'Donate anonymously what Youtube recommends and advertises you',
   },
