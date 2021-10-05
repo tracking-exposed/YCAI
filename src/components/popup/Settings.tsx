@@ -59,7 +59,7 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
             <Typography variant="h6">
             {t('settings:contentCreatorRecommendationLabel')}
             </Typography>
-            <Typography variant="caption" display="block">
+            <Typography variant="body2" display="block">
               {t('settings:contentCreatorRecommendationHint')}
             </Typography>
           </FormLabel>
@@ -89,7 +89,7 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
             <Typography variant="h6">
               {t('settings:communityRecommendationsLabel')}
             </Typography>
-            <Typography variant="caption" display="block">
+            <Typography variant="body2" display="block">
               {t('settings:communityRecommendationsHint')}
             </Typography>
           </FormLabel>
@@ -117,7 +117,7 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
               <Typography variant="h6"> 
               {t('settings:contributeToIndipendentStatsLabel')}
               </Typography>
-              <Typography variant="caption" display="block">
+              <Typography variant="body2" display="block">
                 {t('settings:contributeToIndipendentStatsHint')}
               </Typography>
             </FormLabel>
