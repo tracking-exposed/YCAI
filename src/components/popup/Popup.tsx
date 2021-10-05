@@ -6,7 +6,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Divider,
   FormControlLabel,
   Grid,
   makeStyles,
@@ -43,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     color: 'black',
     textDecoration: 'none',
   },
+  switchFormControl: {
+    margin: 0
+  }
 }));
 
 const PopupLoader: React.FC = () => {
@@ -85,7 +87,7 @@ export const Popup = withQueries(({ queries }) => {
           <Card className={classes.container}>
             <CardContent className={classes.content}>
               <Grid className={classes.header} container alignItems="center">
-                <Grid item sm={8} xs={8}>
+                <Grid item xs={7}>
                   <a
                     className={classes.link}
                     href={config.REACT_APP_WEB_URL}
@@ -95,10 +97,12 @@ export const Popup = withQueries(({ queries }) => {
                     <img className={classes.img} src="/ycai-logo.png" />
                   </a>
                 </Grid>
-                <Grid item sm={4} xs={4}>
-                  <FormControlLabel
+                <Grid item xs={1} />
+                <Grid item xs={4} justifyContent="center">
+                  <FormControlLabel className={classes.switchFormControl}
                     control={
                       <Switch
+                        color="primary"
                         checked={settings.active}
                         size="small"
                         onChange={(e, c) =>
@@ -106,7 +110,7 @@ export const Popup = withQueries(({ queries }) => {
                         }
                       />
                     }
-                    label="Enable"
+                    label="Enable" 
                     labelPlacement="end"
                   />
                 </Grid>
@@ -116,7 +120,6 @@ export const Popup = withQueries(({ queries }) => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Divider />
               <Settings settings={settings} />
             </CardContent>
 

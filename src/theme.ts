@@ -27,10 +27,11 @@ export const YCAITheme = createTheme({
   },
   palette: {
     primary: {
-      light: '#ff5983',
-      main: '#f50057',
-      dark: '#bb002f',
+      light: '#FF338F',
+      main: '#e33180',
+      dark: '#C9065E',
       contrastText: '#FFFFFF',
     },
   },
 });
+
