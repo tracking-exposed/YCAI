@@ -15,14 +15,18 @@ const Zimplon = {
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
 };
 
+
+
 export const YCAITheme = createTheme({
   typography: {
+    // h1: {}
     fontFamily: 'Trex-Regular',
+    fontWeightBold: 500
   },
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        '@font-face': [Zimplon],
+        '@font-face': [Zimplon], 
       },
     },
     MuiTabs: {
@@ -33,10 +37,11 @@ export const YCAITheme = createTheme({
   },
   palette: {
     primary: {
-      light: '#ff5983',
-      main: '#f50057',
-      dark: '#bb002f',
+      light: '#FF338F',
+      main: '#e33180',
+      dark: '#C9065E',
       contrastText: '#FFFFFF',
     },
   },
 });
+

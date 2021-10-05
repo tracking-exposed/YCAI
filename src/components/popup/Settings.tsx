@@ -1,6 +1,5 @@
 import { updateSettings } from '../../API/commands';
 import {
-  FormHelperText,
   FormLabel,
   Typography,
   Divider,
@@ -18,6 +17,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(2),
   },
+  smallTitle: {
+    marginTop: 30,
+    paddingBottom: 12,
+  },
+  noMargin: {
+    marginLeft: 0,
+    marginRight: 0,
+  },
+  marginRight: {
+    marginRight: 15,
+  },
 }));
 
 interface SettingsProps {
@@ -29,11 +39,13 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
   const classes = useStyles();
   return (
     <>
-      <FormHelperText>{t('title')}</FormHelperText>
-      <FormControlLabel
+      {/* <FormHelperText className={classes.smallTitle}>{t('recommendations:title')}</FormHelperText> */}
+      <br/>
+      <FormControlLabel className={classes.noMargin}
         disabled={!settings.active}
         control={
           <Switch
+            className={classes.marginRight}
             aria-labelledby="switch-recommendations"
             color="primary"
             checked={settings.ccRecommendations}
@@ -52,10 +64,13 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
         }
         labelPlacement="end"
       />
-      <FormControlLabel
+      <br/>
+      <br/>
+      <FormControlLabel className={classes.noMargin}
         disabled={true}
         control={
           <Switch
+            className={classes.marginRight}
             aria-labelledby="switch-recommendations"
             color="primary"
             checked={settings.communityRecommendations}
@@ -77,14 +92,16 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
         }
         labelPlacement="end"
       />
+      <br/><br/>
       <Divider className={classes.divider} />
 
-      <FormHelperText>{t('statistics:title')}</FormHelperText>
+      {/* <FormHelperText className={classes.smallTitle}>{t('statistics:title')}</FormHelperText> */}
       <FormControl component="fieldset">
-        <FormControlLabel
+        <FormControlLabel className={classes.noMargin}
           disabled={!settings.active}
           control={
             <Switch
+              className={classes.marginRight}
               aria-labelledby="switch-stats"
               color="primary"
               checked={settings.stats}
@@ -93,7 +110,9 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
           }
           label={
             <FormLabel>
+              <Typography> 
               {t('settings:contributeToIndipendentStatsLabel')}
+              </Typography>
               <Typography variant="caption" display="block">
                 {t('settings:contributeToIndipendentStatsHint')}
               </Typography>
