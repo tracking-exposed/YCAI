@@ -37,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
   img: {
     width: '100%',
     maxWidth: 200,
+    display: 'block'
   },
   link: {
     color: 'black',
     textDecoration: 'none',
+    display: 'block'
   },
   switchFormControl: {
     margin: 0
@@ -97,6 +99,7 @@ export const Popup = withQueries(({ queries }) => {
                     <img className={classes.img} src="/ycai-logo.png" />
                   </a>
                 </Grid>
+
                 <Grid item xs={1} />
                 <Grid item xs={4} justifyContent="center">
                   <FormControlLabel className={classes.switchFormControl}
@@ -105,6 +108,7 @@ export const Popup = withQueries(({ queries }) => {
                         color="primary"
                         checked={settings.active}
                         size="small"
+                        color="primary"
                         onChange={(e, c) =>
                           updateSettings({ ...settings, active: c })()
                         }
@@ -112,6 +116,7 @@ export const Popup = withQueries(({ queries }) => {
                     }
                     label="Enable" 
                     labelPlacement="end"
+                    style={{ background: 'red' }}
                   />
                 </Grid>
                 <Grid item xs={12}>
