@@ -108,7 +108,6 @@ export const Popup = withQueries(({ queries }) => {
                         color="primary"
                         checked={settings.active}
                         size="small"
-                        color="primary"
                         onChange={(e, c) =>
                           updateSettings({ ...settings, active: c })()
                         }
