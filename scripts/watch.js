@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 process.env.NODE_ENV = 'development';
 
 const fs = require('fs-extra');
@@ -6,9 +7,18 @@ const paths = require('react-scripts/config/paths');
 const webpack = require('webpack');
 const config = require('react-scripts/config/webpack.config.js');
 const configOverrides = require('../config-overrides');
-const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const webpackConfig = configOverrides.webpack(config('development'));
+
+function copyPublicFolder() {
+  fs.copySync(paths.appPublic, paths.appBuild, {
+    dereference: true,
+    filter: (file) => {
+      // let webpack handle .html and .json files
+      return !['.html', '.json'].some((s) => path.extname(file) === s);
+    },
+  });
+}
 
 for (const rule of webpackConfig.module.rules) {
   if (!rule.oneOf) continue;
@@ -45,13 +55,3 @@ webpack(webpackConfig).watch({}, (err, stats) => {
     })
   );
 });
-
-function copyPublicFolder() {
-  fs.copySync(paths.appPublic, paths.appBuild, {
-    dereference: true,
-    filter: (file) => {
-      // let webpack handle .html and .json files
-      return !['.html', '.json'].some((s) => path.extname(file) === s);
-    },
-  });
-}

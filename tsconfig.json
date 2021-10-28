@@ -28,6 +28,7 @@
   },
   "include": [
     "./src",
+    "./scripts",
     "./yttrex-backend"
   ],
   "exclude": [
