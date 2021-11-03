@@ -45,7 +45,7 @@ export const sendMessage =
           new Promise<M['Response']>((resolve) => {
             log.debug('Sending message %s with payload %O', r.Request.type, p);
             bo.runtime.sendMessage<M['Request'], M['Response']>(
-              { type: r.Request.type, payload: p as any },
+              { type: r.Request.type, payload: p },
               resolve
             );
           }),

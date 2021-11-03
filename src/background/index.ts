@@ -29,10 +29,12 @@ import {
 } from '../providers/browser.provider';
 import { bo } from '../utils/browser.utils';
 import { fromStaticPath } from '../utils/endpoint.utils';
-import { bkgLogger } from '../utils/logger.utils';
+import { GetLogger } from '../utils/logger.utils';
 import db, { AUTH_KEY, CONTENT_CREATOR } from './db';
 import * as development from './reloadExtension';
 import * as settings from './settings';
+
+const bkgLogger = GetLogger('background');
 
 export const getStorageKey = (type: string): string => {
   switch (type) {
