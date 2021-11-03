@@ -19,24 +19,20 @@ import {
   ReloadExtension,
   UpdateAuth,
   UpdateContentCreator,
-  UpdateSettings,
+  UpdateSettings
 } from '../models/Messages';
 import { getDefaultSettings, Keypair, Settings } from '../models/Settings';
 import { APIError, apiFromEndpoint } from '../providers/api.provider';
 import {
   catchRuntimeLastError,
-  toBrowserError,
+  toBrowserError
 } from '../providers/browser.provider';
 import { bo } from '../utils/browser.utils';
 import { fromStaticPath } from '../utils/endpoint.utils';
 import { bkgLogger } from '../utils/logger.utils';
-import db from './db';
+import db, { AUTH_KEY, CONTENT_CREATOR } from './db';
 import * as development from './reloadExtension';
 import * as settings from './settings';
-
-const SETTINGS_KEY = 'settings';
-const AUTH_KEY = 'auth';
-const CONTENT_CREATOR = 'content-creator';
 
 export const getStorageKey = (type: string): string => {
   switch (type) {
@@ -44,7 +40,7 @@ export const getStorageKey = (type: string): string => {
       return settings.PUBLIC_KEYPAIR;
     case GetSettings.value:
     case UpdateSettings.value:
-      return SETTINGS_KEY;
+      return settings.SETTINGS_KEY;
     case GetAuth.value:
     case UpdateAuth.value:
       return AUTH_KEY;
@@ -183,7 +179,7 @@ const getMessageHandler = <M extends Messages[keyof Messages]>(
 bo.runtime.onMessage.addListener(
   (request: MessageType<any, any, any>, sender, sendResponse) => {
     // eslint-disable-next-line no-console
-    bkgLogger.debug('message received', request, sender);
+    bkgLogger.debug('message received %O %O', request, sender);
 
     if (config.NODE_ENV === 'development') {
       if (request.type === ReloadExtension.value) {
@@ -191,30 +187,37 @@ bo.runtime.onMessage.addListener(
       }
     }
 
-    getMessageHandler(request)()
-      .then((r) => {
-        if (E.isRight(r)) {
-          bkgLogger.debug('Response for request %s: %O', request.type, r.right);
-          return sendResponse(r.right);
-        }
+    const validMessages = Object.keys(Messages);
+    if (validMessages.includes(request.type)) {
+      getMessageHandler(request)()
+        .then((r) => {
+          if (E.isRight(r)) {
+            bkgLogger.debug(
+              'Response for request %s: %O',
+              request.type,
+              r.right
+            );
+            return sendResponse(r.right);
+          }
 
-        // eslint-disable-next-line
-        bkgLogger.error('Failed to process request %O', r.left);
+          // eslint-disable-next-line
+          bkgLogger.error('Failed to process request %O', r.left);
 
         return undefined;
       })
       // eslint-disable-next-line
       .catch((e) => bkgLogger.error('An error occurred %O', e));
 
-    // this enable async response
-    return true;
+      // this enable async response
+      return true;
+    }
   }
 );
 
 bo.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     bkgLogger.debug('Extension installed %O', details);
-    // create default settings
+    // launch install message
     void pipe(
       sequenceS(TE.ApplicativePar)({
         keypair: settings.generatePublicKeypair(''),
@@ -223,6 +226,7 @@ bo.runtime.onInstalled.addListener((details) => {
       })
     )();
   } else if (details.reason === 'update') {
+    // launch update message
     void pipe(
       sequenceS(TE.ApplicativePar)({
         keypair: pipe(

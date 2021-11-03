@@ -6,8 +6,12 @@ import { getAssignSemigroup } from 'fp-ts/lib/struct';
 import { catchRuntimeLastError } from '../providers/browser.provider';
 import { GetLogger } from '../utils/logger.utils';
 
-const dbLogger = GetLogger('db');
 
+export const AUTH_KEY = 'auth';
+export const CONTENT_CREATOR = 'content-creator';
+
+
+const dbLogger = GetLogger('db');
 const backend = bo.storage.local;
 
 const backendGet = (
@@ -87,8 +91,8 @@ const remove = (key: string): TE.TaskEither<chrome.runtime.LastError, void> =>
   );
 
 export default {
-  get: get,
-  set: set,
-  update: update,
-  remove: remove,
+  get,
+  set,
+  update,
+  remove,
 };
