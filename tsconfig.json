@@ -27,11 +27,13 @@
     "skipLibCheck": true
   },
   "include": [
-    "./src"
+    "./src",
+    "./scripts",
+    "./yttrex-backend/backend"
   ],
   "exclude": [
     "node_modules",
-    "public",
-    "**/__tests__/**"
+    "**/public/**",
+    "**/build/**"
   ]
 }

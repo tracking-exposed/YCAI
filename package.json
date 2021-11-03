@@ -13,7 +13,7 @@
   "scripts": {
     "prepare": "husky install",
     "clean": "rm -rf ./build ./dist",
-    "lint": "eslint ./src",
+    "lint": "eslint ./src ./yttrex-backend/backend",
     "format": "prettier -w ./src config-overrides.js",
     "tsc": "tsc",
     "build": "react-app-rewired build",
