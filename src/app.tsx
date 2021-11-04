@@ -29,7 +29,7 @@ const renderInjectedElements = (): void => {
       const ytRelatedVideoNode = document.querySelector(YT_RELATED_SELECTOR);
 
       if (settings.active) {
-        if (settings.indipendentContributions) {
+        if (settings.independentContributions) {
           appLogger.debug(
             'Independent contribution enabled. Getting the keypair...'
           );
