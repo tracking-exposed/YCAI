@@ -28,7 +28,7 @@ export const deleteKeypair = command(
 
 export const updateSettings = command(
   (payload: Settings) => sendMessage(Messages.UpdateSettings)(payload),
-  { settings, keypair }
+  { keypair, settings, settingsRefetch }
 );
 
 export const deleteProfile = command(
