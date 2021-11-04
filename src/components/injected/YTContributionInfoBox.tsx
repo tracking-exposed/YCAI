@@ -58,7 +58,6 @@ export const YTContributionInfoBox = withQueries(({ queries }) => {
   return pipe(
     queries,
     QR.fold(LazyFullSizeLoader, ErrorBox, ({ keypair, settings }) => {
-      console.log(settings);
       if (settings.independentContributions) {
         return <YTContributionInfoBoxComponent keypair={keypair} />;
       }
