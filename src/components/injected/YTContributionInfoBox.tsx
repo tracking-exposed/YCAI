@@ -2,9 +2,7 @@ import { Box, makeStyles, Typography } from '@material-ui/core';
 import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';
 import { ErrorBox } from 'components/common/ErrorBox';
-import {
-    LazyFullSizeLoader
-} from 'components/common/FullSizeLoader';
+import { LazyFullSizeLoader } from 'components/common/FullSizeLoader';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { Keypair } from 'models/Settings';
 import * as React from 'react';
@@ -22,7 +20,7 @@ const useStyles = makeStyles((props) => ({
   },
 }));
 
-const YTContributionBadgeComponent: React.FC<{ keypair: Keypair }> = ({
+const YTContributionInfoBoxComponent: React.FC<{ keypair: Keypair }> = ({
   keypair,
 }) => {
   const classes = useStyles();
@@ -35,7 +33,7 @@ const YTContributionBadgeComponent: React.FC<{ keypair: Keypair }> = ({
 
     return () => {
       window.addEventListener('beforeunload', () => {
-        dataDonation.flush();
+        dataDonation.clear();
       });
     };
   }, []);
@@ -54,11 +52,11 @@ const YTContributionBadgeComponent: React.FC<{ keypair: Keypair }> = ({
 };
 
 const withQueries = declareQueries({ keypair: keypair });
-export const YTContributionBadge = withQueries(({ queries }) => {
+export const YTContributionInfoBox = withQueries(({ queries }) => {
   return pipe(
     queries,
     QR.fold(LazyFullSizeLoader, ErrorBox, ({ keypair }) => {
-      return <YTContributionBadgeComponent keypair={keypair} />;
+      return <YTContributionInfoBoxComponent keypair={keypair} />;
     })
   );
 });

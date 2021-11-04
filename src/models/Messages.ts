@@ -1,5 +1,6 @@
 import { AuthResponse } from '@backend/models/Auth';
 import { ContentCreator } from '@backend/models/ContentCreator';
+import { ContributionEvent } from '@backend/models/ContributionEvent';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as R from 'fp-ts/lib/Record';
 import * as t from 'io-ts';
@@ -18,9 +19,14 @@ export const GetAuth = t.literal('GetAuth');
 export const UpdateAuth = t.literal('UpdateAuth');
 export const GetContentCreator = t.literal('GetContentCreator');
 export const UpdateContentCreator = t.literal('UpdateContentCreator');
-export const ErrorOccurred = t.literal('ErrorOccurred');
 
 export const APIRequest = t.literal('APIRequest');
+
+// data donation
+export const SyncEvents = t.literal('SyncEvents');
+
+// error
+export const ErrorOccurred = t.literal('ErrorOccurred');
 
 // unused
 export const ReloadExtension = t.literal('ReloadExtension');
@@ -130,6 +136,7 @@ export const Messages = MessagesAPI({
     response: t.any,
   },
   [ReloadExtension.value]: { payload: t.any, response: t.undefined },
+  [SyncEvents.value]: { payload: t.array(ContributionEvent), response: t.any },
   [ServerLookup.value]: { payload: t.any, response: t.undefined },
   [ErrorOccurred.value]: { payload: t.any, response: t.any },
 });

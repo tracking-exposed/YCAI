@@ -10,8 +10,8 @@ import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { YTVideoPage } from './components/injected/YTVideoPage';
 import { YCAITheme } from './theme';
 import { GetLogger } from './utils/logger.utils';
+import { YTContributionInfoBox } from 'components/injected/YTContributionInfoBox';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { YTContributionBadge } from 'components/injected/YTContributionBadge';
 
 const appLogger = GetLogger('app');
 
@@ -55,7 +55,7 @@ const renderInjectedElements = (): void => {
               <React.StrictMode>
                 <ErrorBoundary>
                   <ThemeProvider theme={YCAITheme}>
-                    <YTContributionBadge />
+                    <YTContributionInfoBox />
                   </ThemeProvider>
                 </ErrorBoundary>
               </React.StrictMode>,

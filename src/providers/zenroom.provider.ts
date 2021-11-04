@@ -51,4 +51,5 @@ const makeToken = (
 export const security: SecurityProvider = {
   makeKeypair,
   makeToken,
+  makeSignature: () => E.left({ message: 'Not implemented '})
 };

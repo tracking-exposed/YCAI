@@ -1,7 +1,3 @@
-// # Welcome to the extension docs!
-// Here you can learn how the extension works and, if this is what you aim for,
-// where to put your hands to hack the code.
-//
 // ## Structure of the extension
 // The extension has two parts:
 //  - a content script
@@ -28,8 +24,11 @@ import _ from 'lodash';
 import { Keypair } from 'models/Settings';
 import { GetLogger } from '../utils/logger.utils';
 import { config } from '../config';
-import { API } from './api.provider';
+import * as TE from 'fp-ts/lib/TaskEither';
 import { ContributionEvent } from '@backend/models/ContributionEvent';
+import { sendMessage } from './browser.provider';
+import { Messages } from 'models/Messages';
+import { pipe } from 'fp-ts/lib/pipeable';
 
 const ddLogger = GetLogger('data-donation');
 
@@ -37,6 +36,12 @@ const HISTORY_KEY = 'history';
 const H1_SELECTOR = 'h1';
 const RECOMMENDED_VIDEOS_SELECTOR = '.recommendedVideosContainer';
 const NUMBER_OF_RETRANSMISSION = 3;
+
+const FLUSH_INTERVAL = parseInt(
+  config.REACT_APP_DATA_DONATION_FLUSH_INTERVAL,
+  10
+);
+
 
 export type ContributionState =
   | { type: 'loading' }
@@ -67,6 +72,8 @@ let randomUUID =
   Math.random().toString(36).substring(2, 13);
 
 let profileStory: any = null;
+let collectDataTimer: any;
+let flushInterval: any;
 
 // Boot the user script. This is the first function called.
 // Everything starts from here.
@@ -79,7 +86,13 @@ const boot = (keypair: Keypair, setState: SetState): void => {
     profileStory = JSON.parse(history).length;
   }
 
-  window.setInterval(function () {
+  // register flush timer
+
+  flushInterval = setInterval(() => {
+    flush();
+  }, FLUSH_INTERVAL);
+
+  collectDataTimer = setInterval(function () {
     setState({ type: 'loading' });
     const urlMatch = window.location.href !== lastVideoURL;
     ddLogger.debug(
@@ -117,105 +130,6 @@ const boot = (keypair: Keypair, setState: SetState): void => {
     });
   }, videoPeriodicTimeout);
 };
-
-/*
- * phases are all the div which can appears on the right bottom.
- * the function below is called in the code, when the condition is
- * met, and make append the proper span */
-// const phases = {
-//   video: { seen: videoSeen, wait: videoWait, send: videoSend },
-//   counters: {
-//     video: { seen: 0, wait: 0, send: 0 },
-//   },
-// };
-// function phase(path: string): void {
-//   const f = _.get(phases, path);
-//   f(path);
-// }
-
-/* below the 'span creation' function mapped in the dict phases above */
-// function videoWait(path: string): void {
-//   buildSpan({
-//     path,
-//     position: 1,
-//     text: 'waiting...',
-//     duration: 400,
-//   });
-// }
-
-// function videoSeen(path: string): void {
-//   ddLogger.debug('Video seen %s', path);
-//   buildSpan({
-//     path,
-//     position: 2,
-//     text: 'Evidence collected',
-//     duration: 11500,
-//   });
-//   const videoSeenDiv = document.querySelector<HTMLDivElement>('#video-seen');
-//   if (videoSeenDiv !== null) {
-//     videoSeenDiv.style.backgroundColor = '#c136b3';
-//     videoSeenDiv.style.backgroundPosition = 'center';
-//     videoSeenDiv.style.cursor = 'cell';
-//     videoSeenDiv.onclick = () => {
-//       if (testElement(document.body.innerHTML, 'body')) {
-//         phase('video.send');
-//         setState({ type: 'sent' });
-//       }
-//     };
-//   }
-// }
-
-/* this function build the default span, some css sytes are
- * overriden in the calling function */
-// function buildSpan(c: {
-//   path: string;
-//   position: number;
-//   text: string;
-//   duration: number;
-// }): void {
-//   let cnt = _.get(phases.counters, c.path);
-//   cnt += 1;
-//   const id = _.replace(c.path, /\./, '-');
-//   _.set(phases.counters, c.path, cnt);
-
-//   let infospan: HTMLSpanElement | null = null;
-//   const fullt = c.text; /* `${cnt} ▣ ${c.text}`; */
-//   if (cnt === 1) {
-//     // console.log("+ building span for the first time", c, cnt);
-//     infospan = document.createElement('span');
-//     infospan.setAttribute('id', id);
-//     infospan.style.position = 'fixed';
-//     infospan.style.width = '120px';
-//     infospan.style.textAlign = 'right';
-//     infospan.style.height = '20px';
-//     infospan.style.right = '5px';
-//     infospan.style.color = 'lightgoldenrodyellow';
-//     infospan.style.bottom = c.position * 16 + 'px';
-//     (infospan.style as any).size = '0.5em';
-//     infospan.style.padding = '4px';
-//     infospan.style.zIndex = '9000';
-//     infospan.style.borderRadius = '10px';
-//     infospan.style.background = '#798e05';
-//     infospan.textContent = fullt;
-//     document.body.appendChild(infospan);
-//     /* change infospan in jquery so no proble in apply .fadeOut */
-//     infospan = document.querySelector<HTMLSpanElement>('#' + id);
-//   } else {
-//     infospan = document.querySelector<HTMLSpanElement>('#' + id);
-//     if (infospan !== null) {
-//       infospan.innerText = fullt;
-//     }
-//   }
-
-//   const loadDiv = document.querySelector<HTMLDivElement>('#loadiv');
-//   if (loadDiv !== null) {
-//     loadDiv.style.display = 'block';
-//   }
-//   if (infospan !== null) {
-//     infospan.style.display = 'flex';
-//     // infospan.fadeOut({ duration: c.duration });
-//   }
-// }
 
 const videoPeriodicTimeout = 5000;
 let lastVideoURL: string;
@@ -266,10 +180,9 @@ function testElement(nodeHTML: any, selector: string): boolean {
   const exists = _.reduce(
     cache,
     function (memo, e, i) {
-      const evalu = _.eq(e, s);
-      /* console.log(memo, s, e, evalu, i); */
+      const isEqual = _.eq(e, s);
       if (!memo) {
-        if (evalu) {
+        if (isEqual) {
           memo = true;
         }
       }
@@ -336,9 +249,6 @@ function refreshUUID(): void {
 }
 
 const flush = (): void => {
-  window.clearInterval();
-  // hub.event('windowUnload');
-  // hub.register('windowUnload', sync.bind(null, hub));
   if (state.content.length > 0) {
     const uuids = _.size(_.uniq(_.map(state.content, 'randomUUID')));
     ddLogger.debug(
@@ -348,22 +258,21 @@ const flush = (): void => {
       JSON.stringify(_.countBy(state.content, 'type')),
       uuids
     );
-    // Send timelines to the page handling the communication with the API.
-    // This might be refactored using something compatible to the HUB architecture.
 
-    ddLogger.error(`Sync with backend before leaving %O`, state.content);
-
-    void API.v2.Public.AddEvents({
-      Headers: {
-        'X-YTtrex-Build': '',
-        'X-YTtrex-Version': config.REACT_APP_VERSION,
-        'X-YTtrex-PublicKey': '',
-        'X-YTtrex-Signature': '',
-      },
-      Body: state.content,
-    })();
-    state.content = [];
+    void pipe(
+      sendMessage(Messages.SyncEvents)(state.content),
+      // eslint-disable-next-line array-callback-return
+      TE.map(() => {
+        state.content = [];
+      })
+    )();
   }
 };
 
-export { boot, flush };
+const clear = (): void => {
+  flush();
+  clearInterval(flushInterval);
+  clearInterval(collectDataTimer);
+};
+
+export { boot, flush, clear };

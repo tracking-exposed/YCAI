@@ -25,13 +25,13 @@ export const toBrowserError = (e: unknown): chrome.runtime.LastError => {
 
 export const catchRuntimeLastError = <A>(
   v: A
-): TE.TaskEither<chrome.runtime.LastError, A> => {
+): E.Either<chrome.runtime.LastError, A> => {
   if (bo.runtime.lastError !== null && bo.runtime.lastError !== undefined) {
     // eslint-disable-next-line
     log.error('Runtime error caught %O', bo.runtime.lastError);
-    return TE.left(bo.runtime.lastError);
+    return E.left(bo.runtime.lastError);
   }
-  return TE.right(v);
+  return E.right(v);
 };
 
 export const sendMessage =
@@ -51,7 +51,7 @@ export const sendMessage =
           }),
         E.toError
       ),
-      TE.chain(catchRuntimeLastError),
+      TE.chain((v) => TE.fromEither(catchRuntimeLastError(v))),
       TE.chain((result) => {
         if (result.type === ErrorOccurred.value) {
           return TE.left(toBrowserError(result.response));
@@ -100,7 +100,7 @@ export const sendAPIMessage =
           }),
         E.toError
       ),
-      TE.chain(catchRuntimeLastError),
+      TE.chain(v => TE.fromEither(catchRuntimeLastError(v))),
       TE.chain((result) => {
         log.debug('Response for %s received %O', staticPath, result);
         if (result.type === ErrorOccurred.value) {
