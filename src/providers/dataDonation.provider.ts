@@ -1,24 +1,3 @@
-// ## Structure of the extension
-// The extension has two parts:
-//  - a content script
-//  - event pages.
-//
-// The **content script** is the JavaScript code injected into the pornhub.com
-// website. It can interact with the elements in the page to scrape the data and
-// prepare the payload to be sent to the API.
-//
-// On the other side there are **event pages**. They are scripts triggered by
-// some events sent from the **content script**. Since they run in *browser-space*,
-// they have the permission (if granted) to do cross-domain requests,
-// and [much more](https://developer.chrome.com/extensions/declare_permissions).
-// All **event pages** are contained in the [`./background`](./background/app.html) folder.
-// (the name is **background** for historical reasons and it might be subject of changes
-// in the future).
-//
-
-// # Code
-
-// Import other utils to handle the DOM and scrape data.
 import { differenceInSeconds } from 'date-fns';
 import _ from 'lodash';
 import { Keypair } from 'models/Settings';
@@ -28,7 +7,7 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import { ContributionEvent } from '@backend/models/ContributionEvent';
 import { sendMessage } from './browser.provider';
 import { Messages } from 'models/Messages';
-import { pipe } from 'fp-ts/lib/pipeable';
+import { pipe } from 'fp-ts/lib/function';
 
 const ddLogger = GetLogger('data-donation');
 
@@ -171,7 +150,7 @@ function processData(
 
 let cache: any[] = [];
 function testElement(nodeHTML: any, selector: string): boolean {
-  ddLogger.debug(`Test element %O for selector %s`, nodeHTML, selector);
+  ddLogger.debug(`Test html for selector %s`, selector);
   // this function look at the LENGTH of the proposed element.
   // if an element with the same size has been already sent with
   // this URL, this duplication is ignored.
