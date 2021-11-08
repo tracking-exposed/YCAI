@@ -91,7 +91,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
               variant="outlined"
               onClick={openRecommendations}
             >
-              {t('actions:add_recommendations')}
+              {t('actions:manage_recommendations')}
             </Button>
           </CardActions>
         </Box>
