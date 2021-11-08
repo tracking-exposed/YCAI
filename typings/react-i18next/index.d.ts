@@ -37,7 +37,6 @@ declare module 'react-i18next' {
       };
       account: {
         channel: string;
-        channelVideos: string;
       };
       creator: {
         title: string;

@@ -41,7 +41,6 @@ const resources: CustomTypeOptions['resources'] = {
   },
   account: {
     channel: 'Your channel',
-    channelVideos: 'Channel Videos',
   },
   creator: {
     title: 'Creator',
