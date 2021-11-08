@@ -5,7 +5,7 @@ import { CreatorVideos } from '../CreatorVideos';
 export const Studio: React.FC = () => {
   return (
     <CreatorVideos
-      onVideoClick={async (v) => {
+      openVideoRecommendations={async (v) => {
         await doUpdateCurrentView({
           view: 'studioEdit',
           videoId: v.videoId,

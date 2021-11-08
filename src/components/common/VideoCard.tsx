@@ -1,138 +1,146 @@
-import React from 'react';
+import React, {
+  useState,
+} from 'react';
 
 import {
+  Box,
+  Button,
   Card,
+  CardActions,
+  CardContent,
   CardMedia,
-  Grid,
-  Typography,
+  IconButton,
+  Link,
+  MenuList,
+  MenuItem,
+  Popover,
 } from '@material-ui/core';
+
+import {
+  MoreVert,
+} from '@material-ui/icons';
 
 import { makeStyles } from '@material-ui/styles';
 
 import { useTranslation } from 'react-i18next';
-import { useDrag } from 'react-dnd';
 
-import { getYTThumbnailById } from '../../utils/yt.utils';
+import { getYTMaxResThumbnailById } from '../../utils/yt.utils';
 import { YCAITheme } from '../../theme';
 
 interface VideoCardProps {
   videoId: string;
   title: string;
-  onClick?: (id: string) => void;
+  openRecommendations: () => void;
 }
 
 const useStyles = makeStyles<YCAITheme>(theme => ({
-  videoCard: {
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
     height: '100%',
-    '& a, a:visited, a:hover': {
-      color: theme.palette.common.black,
-      textDecoration: 'none',
-    },
-  },
-  cardGrid: {
-    height: '100%',
-    '& div img': {
-      height: '120px',
-      paddingTop: '2%'
-    },
-    '& > div:not(:first-child) > *:first-child': {
-      marginLeft: theme.spacing(1),
+    '& .MuiCardContent-root': {
+      flexGrow: 1,
     }
   },
-  titleHeading: {
-    fontSize: '1em',
-    fontWeight: 'bold',
-  },
-  cardActionsGrid: {
-    justifyContent: 'space-between',
-    alignItems: 'center-end',
-    '& button': {
-      background: 'none',
-      border: 'none',
-      color: theme.palette.primary.dark,
-      padding: 0,
-      margin: 0,
-      '&:hover': {
-        cursor: 'pointer',
-      }
-    },
-  }
 }));
 
 export const VideoCard: React.FC<VideoCardProps> = ({
   videoId,
   title,
-  onClick,
+  openRecommendations,
 }) => {
   const { t } = useTranslation();
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const [, drag] = useDrag(() => ({
-    type: 'Card',
-    item: { videoId, title },
-    end: (item, monitor) => {
-      // eslint-disable-next-line
-      console.log('on drag end', { item, monitor });
-      // const dropResult = monitor.getDropResult<DropResult>();
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-      handlerId: monitor.getHandlerId(),
-    }),
-  }));
+  const handlePopoverOpen: (e: React.MouseEvent<HTMLButtonElement>) => void = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handlePopoverClose: () => void = () => {
+    setAnchorEl(null);
+  };
+
+  const popoverIsOpen = Boolean(anchorEl);
 
   return (
-    <Card
-      ref={drag}
-      className={classes.videoCard}
-    >
-      <Grid container className={classes.cardGrid}>
-        <Grid item xs={12}>
-          <CardMedia
-            component="img"
-            src={getYTThumbnailById(videoId)}
-            title={title}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Typography gutterBottom component="h4" className={classes.titleHeading}>
-            <a
-              href={'https://youtu.be/' + videoId}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {title}
-            </a>
-          </Typography>
-        </Grid>
-        <Grid item xs={12} container spacing={1} className={classes.cardActionsGrid}>
-          <Grid item>
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href={'https://youtube.tracking.exposed/compare/#' + videoId}
-            >
-              {t('actions:compare')}
-            </a>
-          </Grid>
-          <Grid item>
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href={'https://youtube.tracking.exposed/related/#' + videoId}
-            >
-              {t('actions:related')}
-            </a>
-          </Grid>
-          <Grid item>
-            <button
-              onClick={() => onClick?.(videoId)}
+    <Card className={classes.root}>
+      <CardMedia
+          component="img"
+          src={getYTMaxResThumbnailById(videoId)}
+          title={title}
+        />
+      <CardContent>
+        <Link
+          color="textPrimary"
+          href={'https://youtu.be/' + videoId}
+          rel="noreferrer"
+          target="_blank"
+          underline="none"
+          variant="subtitle1"
+        >
+          {title}
+        </Link>
+      </CardContent>
+      <Box display="flex" alignItems="center">
+        <Box flexGrow={1}>
+          <CardActions>
+            <Button
+              color="secondary"
+              size="small"
+              variant="outlined"
+              onClick={openRecommendations}
             >
               {t('actions:add_recommendations')}
-            </button>
-          </Grid>
-        </Grid>
-      </Grid>
+            </Button>
+          </CardActions>
+        </Box>
+        <Box>
+          <IconButton
+            color="secondary"
+            onClick={handlePopoverOpen}
+          >
+            <MoreVert />
+          </IconButton>
+          <Popover
+            open={popoverIsOpen}
+            anchorEl={anchorEl}
+            disableScrollLock
+            onClose={handlePopoverClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+          >
+            <MenuList dense>
+              <MenuItem>
+                <Link
+                  color="textSecondary"
+                  href={'https://youtube.tracking.exposed/compare/#' + videoId}
+                  onClick={handlePopoverClose}
+                  rel="noreferrer"
+                  target="_blank"
+                  underline="none"
+                >
+                  {t('actions:compare')}
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  color="textSecondary"
+                  href={'https://youtube.tracking.exposed/related/#' + videoId}
+                  onClick={handlePopoverClose}
+                  rel="noreferrer"
+                  target="_blank"
+                  underline="none"
+                >
+                  {t('actions:related')}
+                </Link>
+              </MenuItem>
+            </MenuList>
+          </Popover>
+        </Box>
+      </Box>
     </Card>
   );
 };
