@@ -25,7 +25,7 @@ const renderVideoRecommendationsBox = (): void => {
       appLogger.debug('Settings refreshed %O', settings);
       const ytRelatedVideoNode = document.querySelector(YT_RELATED_SELECTOR);
 
-      if (settings.active) {
+      if (settings.active && settings.ccRecommendations) {
         appLogger.debug('Settings: active');
         if (ytRelatedVideoNode !== null) {
           appLogger.debug(

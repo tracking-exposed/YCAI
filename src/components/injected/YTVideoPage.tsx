@@ -27,10 +27,7 @@ const useStyles = makeStyles(() => ({
   tab: {
     minWidth: 100,
   },
-  ytItemsVisible: {
-    display: 'block',
-  },
-  ytItemshidden: {
+  displayNone: {
     display: 'none',
   },
 }));
@@ -61,15 +58,14 @@ export const YTVideoPage = withQueries(
             typeof ytItemsRendererEl === 'object' &&
             ytItemsRendererEl !== null
           ) {
-
             // tab n2 = youtube, tab1 = community
             if (tab === 2) {
               ytItemsRendererEl.className = ytItemsRendererEl.className.replace(
-                `+ ${classes.ytItemshidden}`,
+                `+ ${classes.displayNone}`,
                 ''
               );
             } else {
-              ytItemsRendererEl.className += `+ ${classes.ytItemshidden}`;
+              ytItemsRendererEl.className += `+ ${classes.displayNone}`;
             }
           }
         };
@@ -103,18 +99,17 @@ export const YTVideoPage = withQueries(
             logger.debug('Clearing interval %o', checkURLInterval);
             patchYTRecommendations(2);
             window.clearInterval(checkURLInterval);
-
           };
         }, [currentVideoId]);
 
-
         React.useEffect(() => {
-          if (!settings.active) {
-            patchYTRecommendations(2)
+          if (!settings.active || !settings.ccRecommendations) {
+            patchYTRecommendations(2);
           }
         }, [settings]);
 
-        if (!settings.active) {
+        // do not show this component when extension is not `active` or `ux` is disabled
+        if (!settings.active || !settings.ccRecommendations) {
           return null;
         }
 
