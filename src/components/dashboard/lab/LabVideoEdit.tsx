@@ -5,11 +5,11 @@ import AddRecommendationBox from '../AddRecommendationBox';
 import { Recommendations } from '../Recommendations';
 import { VideoRecommendations } from '../VideoRecommendationsEdit';
 
-interface StudioVideoEditProps {
+interface LabVideoEditProps {
   videoId: string;
 }
 
-export const StudioVideoEdit: React.FC<StudioVideoEditProps> = ({
+export const LabVideoEdit: React.FC<LabVideoEditProps> = ({
   videoId,
 }) => {
 
