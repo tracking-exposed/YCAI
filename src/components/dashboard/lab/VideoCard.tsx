@@ -3,16 +3,13 @@ import React from 'react';
 import {
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
-  Chip,
   Link,
   Typography,
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/styles';
-
 import { useTranslation } from 'react-i18next';
 
 import { getYTMaxResThumbnailById } from '../../../utils/yt.utils';
