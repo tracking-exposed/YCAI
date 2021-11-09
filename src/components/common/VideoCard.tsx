@@ -1,24 +1,13 @@
-import React, {
-  useState,
-} from 'react';
+import React from 'react';
 
 import {
-  Box,
   Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
-  IconButton,
   Link,
-  MenuList,
-  MenuItem,
-  Popover,
 } from '@material-ui/core';
-
-import {
-  MoreVert,
-} from '@material-ui/icons';
 
 import { makeStyles } from '@material-ui/styles';
 
@@ -51,17 +40,6 @@ export const VideoCard: React.FC<VideoCardProps> = ({
 }) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handlePopoverOpen: (e: React.MouseEvent<HTMLButtonElement>) => void = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
-
-  const handlePopoverClose: () => void = () => {
-    setAnchorEl(null);
-  };
-
-  const popoverIsOpen = Boolean(anchorEl);
 
   return (
     <Card className={classes.root}>
@@ -82,65 +60,16 @@ export const VideoCard: React.FC<VideoCardProps> = ({
           {title}
         </Link>
       </CardContent>
-      <Box display="flex" alignItems="center">
-        <Box flexGrow={1}>
-          <CardActions>
-            <Button
-              color="secondary"
-              size="small"
-              variant="outlined"
-              onClick={openRecommendations}
-            >
-              {t('actions:manage_recommendations')}
-            </Button>
-          </CardActions>
-        </Box>
-        <Box>
-          <IconButton
-            color="secondary"
-            onClick={handlePopoverOpen}
-          >
-            <MoreVert />
-          </IconButton>
-          <Popover
-            open={popoverIsOpen}
-            anchorEl={anchorEl}
-            disableScrollLock
-            onClose={handlePopoverClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-          >
-            <MenuList dense>
-              <MenuItem>
-                <Link
-                  color="textSecondary"
-                  href={'https://youtube.tracking.exposed/compare/#' + videoId}
-                  onClick={handlePopoverClose}
-                  rel="noreferrer"
-                  target="_blank"
-                  underline="none"
-                >
-                  {t('actions:compare')}
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link
-                  color="textSecondary"
-                  href={'https://youtube.tracking.exposed/related/#' + videoId}
-                  onClick={handlePopoverClose}
-                  rel="noreferrer"
-                  target="_blank"
-                  underline="none"
-                >
-                  {t('actions:related')}
-                </Link>
-              </MenuItem>
-            </MenuList>
-          </Popover>
-        </Box>
-      </Box>
+      <CardActions>
+        <Button
+          color="secondary"
+          size="small"
+          variant="outlined"
+          onClick={openRecommendations}
+        >
+          {t('actions:manage_recommendations')}
+        </Button>
+      </CardActions>
     </Card>
   );
 };
