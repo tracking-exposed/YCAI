@@ -107,7 +107,9 @@ declare module 'react-i18next' {
         thirdTab: string;
       };
       routes: {
-        studio: string;
+        lab_title: string;
+        lab_title_short: string;
+        lab_subtitle: string;
         statistics: string;
         settings: string;
         link_account: string;

@@ -34,7 +34,9 @@ const resources: CustomTypeOptions['resources'] = {
     download: 'Download'
   },
   routes: {
-    studio: 'Studio',
+    lab_title: 'LAB - Recommend on your videos',
+    lab_title_short: 'LAB',
+    lab_subtitle: 'Select a video and highlight content from all over the Internet',
     statistics: 'Statistics',
     settings: 'Settings',
     link_account: 'Link your account',

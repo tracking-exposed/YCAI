@@ -67,15 +67,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           switch (currentView.view) {
             case 'studioEdit':
               return [
-                t('routes:studio'),
-                '',
+                t('routes:lab_title'),
+                t('routes:lab_subtitle'),
                 // eslint-disable-next-line react/jsx-key
                 <StudioVideoEdit videoId={currentView.videoId} />,
               ];
             case 'studio':
               return [
-                t('routes:studio'),
-                '',
+                t('routes:lab_title'),
+                t('routes:lab_subtitle'),
                 // eslint-disable-next-line react/jsx-key
                 <Studio />,
               ];
