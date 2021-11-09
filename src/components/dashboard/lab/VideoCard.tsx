@@ -12,7 +12,11 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import { useTranslation } from 'react-i18next';
 
-import { getYTMaxResThumbnailById } from '../../../utils/yt.utils';
+import {
+  getYTMaxResThumbnailById,
+  getYTVideoURLById,
+} from '../../../utils/yt.utils';
+
 import { YCAITheme } from '../../../theme';
 
 interface VideoCardProps {
@@ -57,7 +61,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
         <CardContent>
           <Link
             color="textPrimary"
-            href={'https://youtu.be/' + videoId}
+            href={getYTVideoURLById(videoId)}
             rel="noreferrer"
             target="_blank"
             underline="none"

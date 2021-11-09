@@ -9,3 +9,6 @@ export const getYTThumbnailById = (id: string): string =>
 
 export const getYTMaxResThumbnailById = (id: string): string =>
   `https://i.ytimg.com/vi_webp/${id}/maxresdefault.webp`;
+
+export const getYTVideoURLById = (id: string): string =>
+  `https://youtu.be/${id}`;
