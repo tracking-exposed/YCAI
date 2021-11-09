@@ -1,12 +1,14 @@
 import React from 'react';
 
 import {
-  Button,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
   CardMedia,
+  Chip,
   Link,
+  Typography,
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/styles';
@@ -31,6 +33,12 @@ const useStyles = makeStyles<YCAITheme>(theme => ({
       flexGrow: 1,
     }
   },
+  manage: {
+    fontWeight: 'bold',
+    fontSize: '0.8rem',
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(2),
+  }
 }));
 
 export const VideoCard: React.FC<VideoCardProps> = ({
@@ -43,33 +51,31 @@ export const VideoCard: React.FC<VideoCardProps> = ({
 
   return (
     <Card className={classes.root}>
-      <CardMedia
-          component="img"
-          src={getYTMaxResThumbnailById(videoId)}
-          title={title}
-        />
-      <CardContent>
-        <Link
-          color="textPrimary"
-          href={'https://youtu.be/' + videoId}
-          rel="noreferrer"
-          target="_blank"
-          underline="none"
-          variant="subtitle1"
-        >
-          {title}
-        </Link>
-      </CardContent>
-      <CardActions>
-        <Button
-          color="secondary"
-          size="small"
-          variant="outlined"
-          onClick={openRecommendations}
+      <CardActionArea onClick={openRecommendations}>
+        <CardMedia
+            component="img"
+            src={getYTMaxResThumbnailById(videoId)}
+            title={title}
+          />
+        <CardContent>
+          <Link
+            color="textPrimary"
+            href={'https://youtu.be/' + videoId}
+            rel="noreferrer"
+            target="_blank"
+            underline="none"
+            variant="subtitle1"
+          >
+            {title}
+          </Link>
+        </CardContent>
+        <Typography
+          color="primary"
+          className={classes.manage}
         >
           {t('actions:manage_recommendations')}
-        </Button>
-      </CardActions>
+        </Typography>
+      </CardActionArea>
     </Card>
   );
 };
