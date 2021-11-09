@@ -10,7 +10,7 @@ import { pullContentCreatorVideos } from 'state/creator.commands';
 import { creatorVideos } from '../../state/creator.queries';
 import { ErrorBox } from '../common/ErrorBox';
 import { LazyFullSizeLoader } from '../common/FullSizeLoader';
-import { VideoCard } from '../common/VideoCard';
+import { VideoCard } from './lab/VideoCard';
 
 const withQueries = declareQueries({ videos: creatorVideos });
 

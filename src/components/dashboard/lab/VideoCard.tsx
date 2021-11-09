@@ -13,8 +13,8 @@ import { makeStyles } from '@material-ui/styles';
 
 import { useTranslation } from 'react-i18next';
 
-import { getYTMaxResThumbnailById } from '../../utils/yt.utils';
-import { YCAITheme } from '../../theme';
+import { getYTMaxResThumbnailById } from '../../../utils/yt.utils';
+import { YCAITheme } from '../../../theme';
 
 interface VideoCardProps {
   videoId: string;
