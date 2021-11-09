@@ -17,6 +17,9 @@ import { GetLogger } from 'utils/logger.utils';
 import { getVideoId } from 'utils/yt.utils';
 import { Tab } from '../common/Tab';
 import { VideoRecommendations } from '../dashboard/VideoRecommendations';
+import ContentCreatorIcon from '@material-ui/icons/HealingOutlined';
+import CommunityIcon from '@material-ui/icons/GroupWorkOutlined';
+import YTIcon from '@material-ui/icons/YouTube';
 
 const logger = GetLogger('yt-video-recommendations');
 
@@ -121,19 +124,26 @@ export const YTVideoPage = withQueries(
                 onChange={(e, n) => onTabChange(n)}
                 aria-label="recommendations tabs"
                 variant="fullWidth"
+                centered
               >
                 <Tab
                   className={classes.tab}
+                  icon={<ContentCreatorIcon />}
+                  wrapped={true}
                   label={t('creator:title')}
                   index={0}
                 />
                 <Tab
                   className={classes.tab}
+                  icon={<CommunityIcon />}
+                  wrapped={true}
                   label={t('statistics:title')}
                   index={1}
                 />
                 <Tab
                   className={classes.tab}
+                  icon={<YTIcon />}
+                  wrapped={true}
                   label={t('youtube:title')}
                   index={2}
                 />
