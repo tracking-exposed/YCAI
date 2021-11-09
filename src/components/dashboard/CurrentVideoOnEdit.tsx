@@ -16,24 +16,22 @@ export const CurrentVideoOnEdit = withQueries((props): React.ReactElement => {
   const { t } = useTranslation();
   return pipe(
     props.queries,
-    QR.fold(
-      LazyFullSizeLoader,
-      ErrorBox,
-      ({ settings: { edit: video } }) => {
-        if (video === null) {
-          return (
-            <Box>
-              <Typography>{t('videos:no_selected')}</Typography>
-            </Box>
-          );
-        }
+    QR.fold(LazyFullSizeLoader, ErrorBox, ({ settings: { edit: video } }) => {
+      if (video === null) {
         return (
           <Box>
-            <VideoCard videoId={video.videoId} title={video.title} />
-            <VideoRecommendations videoId={video.videoId} />
+            <Typography>{t('videos:no_selected')}</Typography>
           </Box>
         );
       }
-    )
+      return (
+        <Box>
+          <VideoCard videoId={video.videoId} title={video.title} />
+          <VideoRecommendations
+            queries={{ videoRecommendations: { videoId: video.videoId } }}
+          />
+        </Box>
+      );
+    })
   );
 });
