@@ -34,8 +34,13 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
       - name: Install modules
-        # if: steps.yarn-cache.outputs.cache-hit != 'true'
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
         run: npm ci
 
   lint:
@@ -53,6 +58,10 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
       - name: Lint code
         run: npm run lint
 
@@ -66,6 +75,10 @@ jobs:
           fetch-depth: 0
           submodules: recursive
           persist-credentials: false
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
       - uses: actions/cache@v2
         with:
@@ -86,10 +99,36 @@ jobs:
           submodules: recursive
           persist-credentials: false
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Test
-        run: npm test
+      - name: Build extension for tests
+        run: npm run build:dev
+
+      - name: Test spec
+        run: npm test spec
+
+      - name: Start api service
+        working-directory: yttrex-backend/backend
+        run: docker-compose up -d
+
+      - name: Log what's going on in docker
+        working-directory: yttrex-backend/backend 
+        run: docker-compose logs api
+
+      - name: Test Code
+        uses: mujo-code/puppeteer-headful@v2
+        env:
+          CI: 'true'
+        with:
+          args: npm test e2e -- --watchAll=false
+
+      - name: Stop api service
+        working-directory: yttrex-backend/backend
+        run: docker-compose down
