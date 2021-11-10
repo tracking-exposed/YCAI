@@ -7,10 +7,10 @@ import * as TE from 'fp-ts/lib/TaskEither';
 import { config } from '../config';
 import * as Messages from '../models/Messages';
 import { getDefaultSettings, Keypair, Settings } from '../models/Settings';
-import { API, APIError, apiFromEndpoint } from '../providers/api.provider';
+import { APIError, apiFromEndpoint } from '../providers/api.provider';
 import {
   catchRuntimeLastError,
-  toBrowserError,
+  toBrowserError
 } from '../providers/browser.provider';
 import { bo } from '../utils/browser.utils';
 import { fromStaticPath } from '../utils/endpoint.utils';
@@ -18,7 +18,6 @@ import { GetLogger } from '../utils/logger.utils';
 import db, { AUTH_KEY, CONTENT_CREATOR } from './db';
 import * as development from './reloadExtension';
 import * as settings from './settings';
-import security from '../providers/bs58.provider';
 
 const bkgLogger = GetLogger('bkg');
 
@@ -155,44 +154,6 @@ const getMessageHandler = <
           type: Messages.APIRequest.value,
           response,
         }))
-      );
-    // sync events
-    case Messages.SyncEvents.value:
-      return pipe(
-        db.get<Keypair>(getStorageKey(Messages.GetKeypair.value)),
-        TE.chain((keypair) => {
-          if (keypair !== null) {
-            return pipe(
-              security.makeSignature(r.payload, keypair.secretKey),
-              TE.fromEither,
-              TE.chain((signature) =>
-                pipe(
-                  API.v2.Public.AddEvents({
-                    Headers: {
-                      'X-YTtrex-Build': config.REACT_APP_VERSION,
-                      'X-YTtrex-PublicKey': keypair.publicKey,
-                      'X-YTtrex-Signature': signature,
-                      'X-YTtrex-Version': config.REACT_APP_VERSION,
-                    },
-                    Body: r.payload ?? [],
-                  }),
-                  TE.chain((v) => TE.fromEither(catchRuntimeLastError(v))),
-                  TE.map((response) => ({ type: r.type as any, response }))
-                )
-              )
-            );
-          }
-
-          return TE.right({
-            type: Messages.ErrorOccurred.value,
-            response: toBrowserError(
-              new Error(
-                `Called ${Messages.SyncEvents.value} without valid keypair`
-              )
-            ),
-          });
-        }),
-        TE.mapLeft(toMessageHandlerError)
       );
     default:
       return TE.right({

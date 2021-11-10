@@ -1,13 +1,13 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';
-import { ErrorBox } from 'components/common/ErrorBox';
-import { LazyFullSizeLoader } from 'components/common/FullSizeLoader';
 import { pipe } from 'fp-ts/lib/pipeable';
-import { Keypair } from 'models/Settings';
 import * as React from 'react';
-import { keypair, settings } from 'state/public.queries';
+import { ErrorBox } from '../../components/common/ErrorBox';
+import { LazyFullSizeLoader } from '../../components/common/FullSizeLoader';
+import { Keypair, Settings } from '../../models/Settings';
 import * as dataDonation from '../../providers/dataDonation.provider';
+import { keypair, settings } from '../../state/public.queries';
 
 const useStyles = makeStyles((props) => ({
   root: {
@@ -20,34 +20,35 @@ const useStyles = makeStyles((props) => ({
   },
 }));
 
-const YTContributionInfoBoxComponent: React.FC<{ keypair: Keypair }> = ({
-  keypair,
-}) => {
+const YTContributionInfoBoxComponent: React.FC<{
+  keypair: Keypair;
+  settings: Settings;
+}> = ({ keypair, settings }) => {
   const classes = useStyles();
   const [state, setState] = React.useState<dataDonation.ContributionState>({
-    type: 'loading',
+    type: 'checking',
   });
 
   React.useEffect(() => {
-    dataDonation.boot(keypair, setState);
+    dataDonation.boot(settings, keypair, setState);
 
     return () => {
       window.addEventListener('beforeunload', () => {
-        dataDonation.clear();
+        dataDonation.clear(keypair);
       });
     };
   }, []);
 
-  if (state.type === 'loading') {
+  if (state.type === 'checking') {
     return null;
   }
 
   return (
     <Box className={classes.root}>
-      {state.type === 'seen' ? (
+      {state.type === 'video-seen' ? (
         <Typography variant="h5">Video seen</Typography>
       ) : (
-        <Typography variant="h5">Fetching...</Typography>
+        <Typography variant="h5">Checking...</Typography>
       )}
     </Box>
   );
@@ -59,7 +60,12 @@ export const YTContributionInfoBox = withQueries(({ queries }) => {
     queries,
     QR.fold(LazyFullSizeLoader, ErrorBox, ({ keypair, settings }) => {
       if (settings.independentContributions) {
-        return <YTContributionInfoBoxComponent keypair={keypair} />;
+        return (
+          <YTContributionInfoBoxComponent
+            keypair={keypair}
+            settings={settings}
+          />
+        );
       }
       return null;
     })
