@@ -1,7 +1,6 @@
 import { Grid } from '@material-ui/core';
 import { YTVideo } from 'components/common/YTVideo';
 import * as React from 'react';
-import { Recommendations } from '../Recommendations';
 import AddRecommendationBox from '../AddRecommendationBox';
 import { VideoRecommendations } from '../VideoRecommendationsEdit';
 
@@ -14,16 +13,16 @@ export const LabVideoEdit: React.FC<LabVideoEditProps> = ({
 }) => {
 
   return (
-    <Grid container spacing={3}>
-      <Grid item md={6} sm={5}>
-        <YTVideo videoId={videoId} />
-        <AddRecommendationBox />
-        <Recommendations
-          queries={{ videoRecommendations: { videoId } }}
-          videoId={videoId}
-        />
+    <Grid container spacing={3} alignItems="flex-start">
+      <Grid container item xs={7} spacing={3}>
+        <Grid item xs={12}>
+          <YTVideo videoId={videoId} />
+        </Grid>
+        <Grid item xs={12}>
+          <AddRecommendationBox videoId={videoId} />
+        </Grid>
       </Grid>
-      <Grid item md={4}>
+      <Grid item xs={5}>
         <VideoRecommendations
           queries={{ videoRecommendations: { videoId } }}
           videoId={videoId}
