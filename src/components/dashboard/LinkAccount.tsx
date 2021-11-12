@@ -1,31 +1,24 @@
-import { isLeft } from 'fp-ts/lib/Either';
-
 import { AuthResponse } from '@backend/models/Auth';
 import {
-  makeStyles,
   Box,
   Button,
   Chip,
   FormControl,
   Grid,
-  Input,
-  Link,
-  Typography,
+  Input, InputLabel, Link, makeStyles, Typography
 } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
 import CopyIcon from '@material-ui/icons/FileCopyOutlined';
+import { isLeft } from 'fp-ts/lib/Either';
 import React from 'react';
 import {
-  useTranslation,
-  Trans,
+  Trans, useTranslation
 } from 'react-i18next';
-
 import {
   copyToClipboard,
-  registerCreatorChannel,
-  verifyChannel,
-  updateAuth,
+  registerCreatorChannel, updateAuth, verifyChannel
 } from '../../state/creator.commands';
+
+
 
 const youtubeChannelUrlRegex = /\/channel\/([^/]+)\/?$/;
 

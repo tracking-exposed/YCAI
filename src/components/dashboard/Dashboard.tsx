@@ -121,7 +121,7 @@ export const Dashboard = withQueries(({ queries }): React.ReactElement => {
       const classes = useStyles();
 
       return (
-        <Grid container className={classes.root} spacing={3}>
+        <Grid container className={classes.root}>
           <Grid item md={3}>
             <Sidebar />
           </Grid>
