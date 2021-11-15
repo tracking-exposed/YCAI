@@ -1,71 +1,116 @@
 import {
-  Grid,
   List,
   ListItem,
   makeStyles,
   Typography,
+  useTheme,
 } from '@material-ui/core';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { doUpdateCurrentView } from 'utils/location.utils';
+import { CurrentView, doUpdateCurrentView } from 'utils/location.utils';
 import { UserProfileBox } from './UserProfileBox';
-import EditIcon from '@material-ui/icons/EditSharp';
-import GroupsIcon from '@material-ui/icons/GroupSharp';
-import SettingsIcon from '@material-ui/icons/SettingsOutlined';
+import LabIcon from '../common/icons/LabIcon';
+import AnalyticsIcon from '../common/icons/AnalyticsIcon';
+import SettingsIcon from '../common/icons/SettingsIcon';
 
 const useStyles = makeStyles((theme) => ({
   routesList: {
     marginTop: 100,
   },
   listItem: {
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
+  },
+  listItemSelected: {
+    color: theme.palette.violet.contrastText,
+    backgroundColor: `${theme.palette.violet.dark}`,
+    '&:hover': {
+      backgroundColor: `${theme.palette.violet.dark}`,
+      opacity: 0.6,
+    },
   },
   listItemIcon: {
     marginRight: 20,
   },
 }));
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  currentView: CurrentView;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ currentView }) => {
   const { t } = useTranslation();
   const classes = useStyles();
+  const theme = useTheme();
   return (
-    <Grid container style={{ height: '100%' }}>
-      <Grid item>
-        <img
-          alt="YCAI Logo"
-          src="/ycai-logo.png"
-          onClick={() => {
-            void doUpdateCurrentView({ view: 'index' })();
-          }}
-        />
-        <UserProfileBox />
-        <List className={classes.routesList}>
-          <ListItem
-            className={classes.listItem}
-            button={true}
-            onClick={doUpdateCurrentView({ view: 'lab' })}
-          >
-            <EditIcon className={classes.listItemIcon} />
-            <Typography>{t('routes:lab_title_short')}</Typography>
-          </ListItem>
-          <ListItem
-            className={classes.listItem}
-            button={true}
-            onClick={doUpdateCurrentView({ view: 'statistics' })}
-          >
-            <GroupsIcon className={classes.listItemIcon} />
-            <Typography>{t('routes:statistics')}</Typography>
-          </ListItem>
-          <ListItem
-            className={classes.listItem}
-            button={true}
-            onClick={doUpdateCurrentView({ view: 'settings' })}
-          >
-            <SettingsIcon className={classes.listItemIcon} />
-            <Typography>{t('routes:settings')}</Typography>
-          </ListItem>
-        </List>
-      </Grid>
-    </Grid>
+    <div style={{ height: '100%' }}>
+      <img
+        alt="YCAI Logo"
+        src="/ycai-logo.png"
+        style={{ width: '100%', marginBottom: 50 }}
+        onClick={() => {
+          void doUpdateCurrentView({ view: 'index' })();
+        }}
+      />
+      <UserProfileBox />
+      <List className={classes.routesList}>
+        <ListItem
+          className={
+            currentView.view === 'lab' || currentView.view === 'labEdit'
+              ? classes.listItemSelected
+              : classes.listItem
+          }
+          button={true}
+          onClick={doUpdateCurrentView({ view: 'lab' })}
+        >
+          <LabIcon
+            className={classes.listItemIcon}
+            color={
+              currentView.view === 'lab' || currentView.view === 'labEdit'
+                ? theme.palette.common.white
+                : theme.palette.primary.main
+            }
+          />
+          <Typography>{t('routes:lab_title_short')}</Typography>
+        </ListItem>
+        <ListItem
+          className={
+            currentView.view === 'statistics'
+              ? classes.listItemSelected
+              : classes.listItem
+          }
+          button={true}
+          onClick={doUpdateCurrentView({ view: 'statistics' })}
+        >
+          <AnalyticsIcon
+            className={classes.listItemIcon}
+            color={
+              currentView.view === 'statistics'
+                ? theme.palette.common.white
+                : theme.palette.primary.main
+            }
+          />
+          <Typography>{t('routes:statistics')}</Typography>
+        </ListItem>
+        <ListItem
+          className={
+            currentView.view === 'settings'
+              ? classes.listItemSelected
+              : classes.listItem
+          }
+          button={true}
+          onClick={doUpdateCurrentView({ view: 'settings' })}
+        >
+          <SettingsIcon
+            className={classes.listItemIcon}
+            color={
+              currentView.view === 'settings'
+                ? theme.palette.common.white
+                : theme.palette.primary.main
+            }
+          />
+          <Typography>{t('routes:settings')}</Typography>
+        </ListItem>
+      </List>
+    </div>
   );
 };

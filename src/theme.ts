@@ -79,6 +79,8 @@ export const YCAITheme = createTheme({
     violet: {
       light: violet,
       main: violet,
+      dark: darkViolet,
+      contrastText: white
     },
     yellow: {
       light: yellow,

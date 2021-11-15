@@ -27,16 +27,25 @@ export const CreatorVideos = withQueries<CreatorVideosProps>(
       queries,
       QR.fold(LazyFullSizeLoader, ErrorBox, ({ videos }) => {
         return (
-          <Grid container spacing={1}>
+          <Grid container spacing={2} style={{ width: '100%' }}>
+            <Grid item lg={12} xs={12} style={{ textAlign: 'right' }}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => pullContentCreatorVideos({})()}
+              >
+                {t('actions:update_creator_videos_list')}
+              </Button>
+            </Grid>
             {videos.length === 0 ? (
-              <Grid>
+              <Grid item lg={12} md={12}>
                 <Typography>{t('videos:no_results')}</Typography>
                 <Button onClick={() => pullContentCreatorVideos({})()}>
                   {t('actions:pull_creator_videos')}
                 </Button>
               </Grid>
-            ) : (<>
-              {videos.map((v) => (
+            ) : (
+              videos.map((v) => (
                 <Grid item lg={3} md={4} sm={6} xs={12} key={v.urlId}>
                   <VideoCard
                     videoId={v.videoId}
@@ -44,13 +53,8 @@ export const CreatorVideos = withQueries<CreatorVideosProps>(
                     openRecommendations={() => openVideoRecommendations(v)}
                   />
                 </Grid>
-              ))}
-              <Grid item xs={12}>
-                <Button onClick={() => pullContentCreatorVideos({})()}>
-                  {t('actions:update_creator_videos_list')}
-                </Button>
-              </Grid>
-            </>)}
+              ))
+            )}
           </Grid>
         );
       })
