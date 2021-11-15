@@ -99,10 +99,9 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         padding: theme.spacing(2),
         overflowY: 'scroll',
         height: '100%',
-        width: '100%',
       }}
     >
-      <Grid item>
+      <Grid item xs={12}>
         <Typography variant="h1" color="primary" className={classes.title}>
           {currentViewLabel}
         </Typography>
@@ -114,7 +113,9 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           {currentViewSubtitle}
         </Typography>
       </Grid>
-      <Grid item>{currentViewContent}</Grid>
+      <Grid item xs={12}>
+        {currentViewContent}
+      </Grid>
     </Grid>
   );
 };
