@@ -140,7 +140,7 @@ export const LinkAccount: React.FC<LinkAccountProps> = ({ auth }) => {
         spacing={2}
         alignItems="flex-end"
       >
-        <Grid item xs={12} sm={6} md-offset={1}>
+        <Grid item xs={12} sm={6}>
           <FormControl style={{ display: 'flex', flexDirection: 'row' }}>
             <InputLabel htmlFor="creator-channel">
               {t('account:channel')}
