@@ -1,5 +1,5 @@
 import { Video } from '@backend/models/Video';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Box, Grid, Typography } from '@material-ui/core';
 import * as Q from 'avenger/lib/Query';
 import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';
@@ -28,15 +28,6 @@ export const CreatorVideos = withQueries<CreatorVideosProps>(
       QR.fold(LazyFullSizeLoader, ErrorBox, ({ videos }) => {
         return (
           <Grid container spacing={2} style={{ width: '100%' }}>
-            <Grid item lg={12} xs={12} style={{ textAlign: 'right' }}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={() => pullContentCreatorVideos({})()}
-              >
-                {t('actions:update_creator_videos_list')}
-              </Button>
-            </Grid>
             {videos.length === 0 ? (
               <Grid item lg={12} md={12}>
                 <Typography>{t('videos:no_results')}</Typography>
@@ -55,6 +46,17 @@ export const CreatorVideos = withQueries<CreatorVideosProps>(
                 </Grid>
               ))
             )}
+            <Grid item xs={12}>
+              <Box mt={2}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => pullContentCreatorVideos({})()}
+                >
+                  {t('actions:update_creator_videos_list')}
+                </Button>
+              </Box>
+            </Grid>
           </Grid>
         );
       })
