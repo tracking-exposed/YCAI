@@ -33,6 +33,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface MenuItem {
+  title: string;
+  icon: React.FC<{ className?: string; color: string }>;
+  iconClassName: string;
+  iconColor: string;
+  iconSelectedColor: string;
+  views: Array<CurrentView['view']>;
+  className: string;
+  selectedClassName: string;
+}
+
+const toMenuItem = (
+  d: MenuItem,
+  currentView: CurrentView
+): React.ReactElement => {
+  return (
+    <ListItem
+      className={
+        d.views.includes(currentView.view) ? d.selectedClassName : d.className
+      }
+      button={true}
+      onClick={doUpdateCurrentView({ view: d.views[0] as any })}
+    >
+      <d.icon
+        className={d.iconClassName}
+        color={
+          d.views.includes(currentView.view) ? d.iconSelectedColor : d.iconColor
+        }
+      />
+      <Typography>{d.title}</Typography>
+    </ListItem>
+  );
+};
+
 interface SidebarProps {
   currentView: CurrentView;
 }
@@ -53,63 +87,35 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView }) => {
       />
       <UserProfileBox />
       <List className={classes.routesList}>
-        <ListItem
-          className={
-            currentView.view === 'lab' || currentView.view === 'labEdit'
-              ? classes.listItemSelected
-              : classes.listItem
-          }
-          button={true}
-          onClick={doUpdateCurrentView({ view: 'lab' })}
-        >
-          <LabIcon
-            className={classes.listItemIcon}
-            color={
-              currentView.view === 'lab' || currentView.view === 'labEdit'
-                ? theme.palette.common.white
-                : theme.palette.primary.main
-            }
-          />
-          <Typography>{t('routes:lab_title_short')}</Typography>
-        </ListItem>
-        <ListItem
-          className={
-            currentView.view === 'statistics'
-              ? classes.listItemSelected
-              : classes.listItem
-          }
-          button={true}
-          onClick={doUpdateCurrentView({ view: 'statistics' })}
-        >
-          <AnalyticsIcon
-            className={classes.listItemIcon}
-            color={
-              currentView.view === 'statistics'
-                ? theme.palette.common.white
-                : theme.palette.primary.main
-            }
-          />
-          <Typography>{t('routes:statistics')}</Typography>
-        </ListItem>
-        <ListItem
-          className={
-            currentView.view === 'settings'
-              ? classes.listItemSelected
-              : classes.listItem
-          }
-          button={true}
-          onClick={doUpdateCurrentView({ view: 'settings' })}
-        >
-          <SettingsIcon
-            className={classes.listItemIcon}
-            color={
-              currentView.view === 'settings'
-                ? theme.palette.common.white
-                : theme.palette.primary.main
-            }
-          />
-          <Typography>{t('routes:settings')}</Typography>
-        </ListItem>
+        {[
+          {
+            title: t('routes:lab_title_short'),
+            icon: LabIcon,
+            views: ['lab', 'labEdit'] as Array<CurrentView['view']>,
+          },
+          {
+            title: t('routes:statistics'),
+            icon: AnalyticsIcon,
+            views: ['statistics'] as Array<CurrentView['view']>,
+          },
+          {
+            title: t('routes:settings'),
+            icon: SettingsIcon,
+            views: ['settings'] as Array<CurrentView['view']>,
+          },
+        ].map((opts) =>
+          toMenuItem(
+            {
+              ...opts,
+              iconClassName: classes.listItemIcon,
+              iconColor: theme.palette.primary.main,
+              iconSelectedColor: theme.palette.common.white,
+              className: classes.listItem,
+              selectedClassName: classes.listItemSelected,
+            },
+            currentView
+          )
+        )}
       </List>
     </div>
   );
