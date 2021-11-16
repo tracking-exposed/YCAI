@@ -90,7 +90,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: [install]
+    # needs: [install]
+    matrix:
+      mongo-version: [4.2]
 
     steps:
       - uses: actions/checkout@v2
@@ -103,10 +105,13 @@ jobs:
         with:
           node-version: '14'
 
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: '**/node_modules'
+      #     key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install deps
+        run: npm install
 
       - name: Build extension for tests
         run: npm run build:dev
@@ -114,13 +119,20 @@ jobs:
       - name: Test spec
         run: npm test spec
 
+      - name: Start MongoDB v${{ matrix.mongodb-version }}
+        uses: supercharge/mongodb-github-action@1.2.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
       - name: Start api service
         working-directory: yttrex-backend/backend
-        run: docker-compose up -d
+        run: docker-compose up -d api
 
       - name: Log what's going on in docker
         working-directory: yttrex-backend/backend 
         run: docker-compose logs api
+
+      
 
       - name: Test Code
         uses: mujo-code/puppeteer-headful@v2
