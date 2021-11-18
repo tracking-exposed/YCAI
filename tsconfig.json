@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "esnext",
     "target": "es5",
-    "jsx": "react-jsx",
+    "jsx": "react",
     "noEmit": true,
     "allowJs": true,
     "strict": true,
@@ -31,7 +31,6 @@
       "@backend/*": ["../yttrex-backend/backend/*"]
     }
   },
-  "include": ["."],
   "exclude": [
     "./public/**",
     "**/node_modules/**",

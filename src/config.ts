@@ -1,7 +1,3 @@
-if (process.env.REACT_APP_BUILD_DATE === undefined) {
-  throw new Error('process.env.REACT_APP_BUILD_DATE is not defined');
-}
-
 export const config = {
   NODE_ENV: process.env.NODE_ENV,
   REACT_APP_API_URL: process.env.REACT_APP_API_URL,
