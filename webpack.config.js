@@ -121,13 +121,13 @@ if (mode === 'production') {
       },
     },
   }));
-} else {
-  if (buildENV.BUNDLE_STATS) {
-    plugins.push(new BundleAnalyzerPlugin({
-      generateStatsFile: true,
-      analyzerMode: 'json',
-    }));
-  }
+}
+
+if (buildENV.BUNDLE_STATS) {
+  plugins.push(new BundleAnalyzerPlugin({
+    generateStatsFile: true,
+    analyzerMode: 'json',
+  }));
 }
 
 module.exports = {
