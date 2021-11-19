@@ -134,7 +134,7 @@ module.exports = {
   mode,
 
   entry: {
-    main: path.resolve(__dirname, 'src/index.tsx'),
+    dashboard: path.resolve(__dirname, 'src/dashboard.tsx'),
     app: path.resolve(__dirname, 'src/app.tsx'),
     popup: path.resolve(__dirname, 'src/popup.tsx'),
     background: path.resolve(__dirname, 'src/background/index.ts'),
