@@ -126,7 +126,7 @@ const apiSchemaFromEndpoint = (
             acc.concat({
               name: k,
               in: 'path',
-              required: Params?._tag === 'Type',
+              required: true,
               schema: getOpenAPISchema((Params?.props)[k]),
             }),
           []
@@ -167,16 +167,14 @@ const apiSchemaFromEndpoint = (
   // TODO: define error response
 
   return {
-    [e.Method.toLowerCase()]: {
-      summary: key,
-      description: `${e.Method} ${path}`,
-      tags: tags,
-      parameters,
-      security,
-      requestBody,
-      responses: {
-        ...successResponse,
-      },
+    summary: key,
+    description: `${e.Method} ${path}`,
+    tags: tags,
+    parameters,
+    security,
+    requestBody,
+    responses: {
+      ...successResponse,
     },
   };
 };
@@ -192,15 +190,26 @@ export const generateDoc = (config: DocConfig): any => {
             scopeEndpoints,
             R.reduceWithIndex(S.Ord)({}, (key, endpointAcc, endpoint) => {
               // get swagger compatible path
-              const path = endpoint.getStaticPath((param) => `{${param}}`);
-              const prevEndpoints = (endpointAcc as any)[path] ?? undefined;
+              const endpointStaticPath = endpoint.getStaticPath(
+                (param) => `{${param}}`
+              );
+              const prevEndpoints =
+                (endpointAcc as any)[endpointStaticPath] ?? undefined;
+
+              const previousMethodSchema =
+                prevEndpoints?.[endpoint.Method.toLowerCase()];
+              const currentEndpointSchema = apiSchemaFromEndpoint(
+                key,
+                endpoint,
+                [`${versionKey} - ${scopeKey}`]
+              );
+
               return {
                 ...endpointAcc,
-                [path]: {
+                [endpointStaticPath]: {
                   ...prevEndpoints,
-                  ...apiSchemaFromEndpoint(key, endpoint, [
-                    `${versionKey} - ${scopeKey}`,
-                  ]),
+                  ...previousMethodSchema,
+                  [endpoint.Method.toLowerCase()]: currentEndpointSchema,
                 },
               };
             }),
