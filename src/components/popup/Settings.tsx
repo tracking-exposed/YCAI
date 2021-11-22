@@ -50,9 +50,9 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
             className={classes.marginRight}
             aria-labelledby="switch-recommendations"
             color="primary"
-            checked={settings.ccRecommendations}
+            checked={settings.enhanceYouTubeExperience}
             onChange={(e, checked) =>
-              updateSettings({ ...settings, ccRecommendations: checked })()
+              updateSettings({ ...settings, enhanceYouTubeExperience: checked })()
             }
           />
         }
