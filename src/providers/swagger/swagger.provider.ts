@@ -13,9 +13,9 @@ import * as R from 'fp-ts/lib/Record';
 import * as S from 'fp-ts/lib/string';
 import {
   MinimalEndpoint,
-  MinimalEndpointInstance,
+  MinimalEndpointInstance
 } from 'ts-endpoint/lib/helpers';
-import { getOpenAPISchema } from './IOTSToOpenAPISchema';
+import { getOpenAPISchema, HasOpenAPISchema } from './IOTSToOpenAPISchema';
 
 interface ServerConfig {
   protocol: 'http' | 'https';
@@ -37,6 +37,9 @@ interface DocConfig {
         [key: string]: MinimalEndpointInstance;
       };
     };
+  };
+  models: {
+    [key: string]: HasOpenAPISchema;
   };
   server: ServerConfig;
   components: {
@@ -146,7 +149,9 @@ const apiSchemaFromEndpoint = (
     ? {
         content: {
           'application/json': {
-            schema: getOpenAPISchema((input as any)?.Body),
+            schema: {
+              $ref: `#/components/schemas/${(input as any).Body.name}`,
+            },
           },
         },
       }
@@ -158,7 +163,9 @@ const apiSchemaFromEndpoint = (
       description: (e.Output as any).name,
       content: {
         'application/json': {
-          schema: getOpenAPISchema(e.Output as any),
+          schema: {
+            $ref: `#/components/schemas/${(e.Output as any).name}`,
+          },
         },
       },
     },
@@ -179,51 +186,98 @@ const apiSchemaFromEndpoint = (
   };
 };
 
-export const generateDoc = (config: DocConfig): any => {
-  const paths = pipe(
-    config.endpoints,
-    R.reduceWithIndex({}, (versionKey, acc, versionEndpoints) => {
-      return pipe(
-        versionEndpoints,
-        R.reduceWithIndex(acc, (scopeKey, scopeAcc, scopeEndpoints) => {
-          return pipe(
-            scopeEndpoints,
-            R.reduceWithIndex(S.Ord)({}, (key, endpointAcc, endpoint) => {
-              // get swagger compatible path
-              const endpointStaticPath = endpoint.getStaticPath(
-                (param) => `{${param}}`
-              );
-              const prevEndpoints =
-                (endpointAcc as any)[endpointStaticPath] ?? undefined;
+const getPaths = (
+  endpoints: DocConfig['endpoints']
+): {
+  paths: any;
+  schemas: any;
+} => {
+  return pipe(
+    endpoints,
+    R.reduceWithIndex(S.Ord)(
+      { paths: {}, schemas: {} },
+      (versionKey, versionAcc, versionEndpoints) => {
+        return pipe(
+          versionEndpoints,
+          R.reduceWithIndex(S.Ord)(
+            versionAcc,
+            (scopeKey, scopeAcc, scopeEndpoints) => {
+              return pipe(
+                scopeEndpoints,
+                R.reduceWithIndex(S.Ord)(
+                  { paths: {}, schemas: {} },
+                  (key, endpointAcc, endpoint) => {
+                    // get swagger compatible path
+                    const endpointStaticPath = endpoint.getStaticPath(
+                      (param) => `{${param}}`
+                    );
+                    const prevEndpoints =
+                      (endpointAcc.paths as any)[endpointStaticPath] ??
+                      undefined;
 
-              const previousMethodSchema =
-                prevEndpoints?.[endpoint.Method.toLowerCase()];
-              const currentEndpointSchema = apiSchemaFromEndpoint(
-                key,
-                endpoint,
-                [`${versionKey} - ${scopeKey}`]
-              );
+                    const previousMethodSchema =
+                      prevEndpoints?.[endpoint.Method.toLowerCase()];
+                    const currentEndpointSchema = apiSchemaFromEndpoint(
+                      key,
+                      endpoint,
+                      [`${versionKey} - ${scopeKey}`]
+                    );
 
-              return {
-                ...endpointAcc,
-                [endpointStaticPath]: {
-                  ...prevEndpoints,
-                  ...previousMethodSchema,
-                  [endpoint.Method.toLowerCase()]: currentEndpointSchema,
-                },
-              };
-            }),
-            (endpointResult) => ({ ...scopeAcc, ...endpointResult })
-          );
-        }),
-        (defs) => ({
-          ...acc,
-          ...defs,
-        })
-      );
-    })
+                    const currentSchema = {
+                      [(endpoint.Output as any).name]: getOpenAPISchema(
+                        endpoint.Output as any
+                      ),
+                    };
+
+                    return {
+                      schemas: {
+                        ...currentSchema,
+                      },
+                      paths: {
+                        ...endpointAcc.paths,
+                        [endpointStaticPath]: {
+                          ...prevEndpoints,
+                          ...previousMethodSchema,
+                          [endpoint.Method.toLowerCase()]:
+                            currentEndpointSchema,
+                        },
+                      },
+                    };
+                  }
+                ),
+                (endpointResult) => ({
+                  schemas: { ...scopeAcc.schemas, ...endpointResult.schemas },
+                  paths: { ...scopeAcc.paths, ...endpointResult.paths },
+                })
+              );
+            }
+          ),
+          (defs) => ({
+            paths: {
+              ...versionAcc.paths,
+              ...defs.paths,
+            },
+            schemas: {
+              ...versionAcc.schemas,
+              ...defs.schemas,
+            },
+          })
+        );
+      }
+    )
   );
+};
 
+export const generateDoc = (config: DocConfig): any => {
+  const { paths, schemas } = getPaths(config.endpoints);
+
+  const modelSchema = pipe(
+    config.models,
+    R.reduceWithIndex(S.Ord)({}, (key, acc, model) => ({
+      ...acc,
+      [model.name]: getOpenAPISchema(model),
+    }))
+  );
   return {
     openapi: '3.0.3',
     info: {
@@ -250,6 +304,10 @@ export const generateDoc = (config: DocConfig): any => {
     security: config.security,
     components: {
       securitySchemes: config.components.security,
+      schemas: {
+        ...schemas,
+        ...modelSchema
+      },
     },
     paths: paths,
   };

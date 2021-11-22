@@ -1,11 +1,12 @@
-import 'swagger-ui/dist/swagger-ui.css';
-import '../../../resources/swagger-ui-material.css';
 import * as endpoints from '@backend/endpoints';
-import { config } from 'config';
+import * as models from '@backend/models';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import SwaggerUI from 'swagger-ui';
+import 'swagger-ui/dist/swagger-ui.css';
+import { config } from '../../../config';
 import * as swagger from '../../../providers/swagger/swagger.provider';
+import '../../../resources/swagger-ui-material.css';
 
 export const Swagger: React.FC = () => {
   const { t } = useTranslation();
@@ -42,6 +43,7 @@ export const Swagger: React.FC = () => {
         v2: endpoints.v2,
         v3: endpoints.v3,
       },
+      models: models,
     });
 
     SwaggerUI({
