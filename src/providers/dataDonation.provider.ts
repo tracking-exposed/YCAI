@@ -3,6 +3,7 @@ import {
   ADVContributionEvent,
   VideoContributionEvent,
 } from '@backend/models/ContributionEvent';
+import { debounce } from '@material-ui/core';
 import { differenceInSeconds } from 'date-fns';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
@@ -221,7 +222,7 @@ function leavesWatcher(setState: SetState, settings: Settings): void {
       manageNodes,
       command,
       selectorName,
-      setState,
+      debounce(setState, 1000),
       settings
     );
     watch(document, command.selector, cb);
