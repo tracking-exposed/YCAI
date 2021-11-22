@@ -14,6 +14,7 @@ import { Messages } from '../models/Messages';
 import { API, APIError, toAPIError } from '../providers/api.provider';
 import { sendMessage } from '../providers/browser.provider';
 import { apiLogger } from '../utils/logger.utils';
+import { formatISO, subWeeks } from 'date-fns';
 
 export const CREATOR_CHANNEL_KEY = 'creator-channel';
 export const CURRENT_VIDEO_ON_EDIT = 'current-video-on-edit';
@@ -158,7 +159,12 @@ export const creatorADVStats = compose(
   queryStrict(({ profile }) => {
     return pipe(
       API.v2.Public.GetChannelADVStats({
-        Params: { channelId: profile.channelId },
+        Params: {
+          channelId: profile.channelId,
+          // TODO: move this to params given by caller
+          sdate: formatISO(subWeeks(new Date(), 1), { representation: 'date' }),
+          edate: formatISO(new Date(), { representation: 'date' }),
+        },
       })
     );
   }, available)
