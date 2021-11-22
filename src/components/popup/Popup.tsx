@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   header: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   img: {
-    width: '100%',
-    maxWidth: 200,
+    width: '300%',
+    maxWidth: 300,
     display: 'block',
   },
   link: {
@@ -76,15 +76,15 @@ export const Popup: React.FC = () => {
 
   return (
     <Card className={classes.container}>
-      <Grid className={classes.header} container alignItems="center">
-        <Grid item xs={7}>
+      <Grid className={classes.header} container alignItems="center" align="center">
+        <Grid item xs={12}>
           <a
             className={classes.link}
             href={config.REACT_APP_WEB_URL}
             target="_blank"
             rel="noreferrer"
           >
-            <img className={classes.img} src="/ycai-logo.png" />
+            <img className={classes.img} src="/ycai-logo.svg" />
           </a>
         </Grid>
       </Grid>
@@ -99,7 +99,7 @@ export const Popup: React.FC = () => {
           ({ settings }): any => {
             const content = (
               <CardContent className={classes.content}>
-                <Grid key="app-version" item xs={12}>
+                <Grid key="app-version" item xs={12} align="center">
                   <Typography variant="caption">
                     {t('popup:version', { version, date: timeago })}
                   </Typography>
@@ -126,7 +126,7 @@ export const Popup: React.FC = () => {
               <CardActions key="actions">
                 <Button
                   size="medium"
-                  color={'grey[500]' as any}
+                  color={'black'}
                   variant="contained"
                   href={'/index.html'}
                   target="_blank"
