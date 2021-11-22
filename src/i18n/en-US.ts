@@ -53,7 +53,7 @@ const resources: CustomTypeOptions['resources'] = {
     lab_edit_subtitle: 'Paste a link in the grey box below to add it to the recommendations of this video. You can add recommendations towards any website!',
     statistics: 'Statistics',
     settings: 'Settings',
-    link_account: 'Authenticate your Channel to Choose Recommendations',
+    link_account: 'Authenticate your Channel \n to start recommending on your videos',
   },
   account: {
     channel: 'Your channel URL or ID',

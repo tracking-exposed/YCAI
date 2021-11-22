@@ -40,7 +40,7 @@ export const YCAITheme = createTheme({
     },
     h3: {
       fontWeight: 800,
-      fontSize: '3.3rem',
+      fontSize: '2.6rem',
       marginBottom: 28,
     },
     h4: {
@@ -49,8 +49,8 @@ export const YCAITheme = createTheme({
       fontSize: '3rem',
     },
     h5: {
-      fontWeight: 600,
-      fontSize: '1.5rem',
+      fontWeight: 800,
+      fontSize: '1.3rem',
       marginBottom: 8,
     },
     h6: {
