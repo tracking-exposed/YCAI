@@ -101,15 +101,14 @@ export const Popup: React.FC = () => {
             <PopupLoader />
           ),
           PopupErrorBox,
-          ({ settings }): any => {
-            const content = (
+          ({ settings }): any => (
+            <>
               <CardContent className={classes.content}>
                 <Box
                   className={classes.version}
                   alignItems="center"
                   display="flex"
                   justifyContent="center"
-                  key="app-version"
                 >
                   <Typography variant="caption">
                     {t('popup:version', { version, date: timeago })}
@@ -129,12 +128,9 @@ export const Popup: React.FC = () => {
                   ) : null}
                 </Box>
 
-                <Settings key="settings" settings={settings} />
+                <Settings settings={settings} />
               </CardContent>
-            );
-
-            const actions = (
-              <CardActions key="actions">
+              <CardActions>
                 <Button
                   size="medium"
                   color="primary"
@@ -146,10 +142,8 @@ export const Popup: React.FC = () => {
                   {t('dashboard:title')}
                 </Button>
               </CardActions>
-            );
-
-            return [content, actions];
-          }
+            </>
+          )
         )}
       />
       {/* </Grid> */}
