@@ -9,8 +9,10 @@ import {
   InputLabel,
   Link,
   Typography,
-} from '@material-ui/core';
-import CopyIcon from '@material-ui/icons/FileCopyOutlined';
+} from '@mui/material';
+
+import { makeStyles } from '@mui/styles';
+import { ContentCopy as CopyIcon } from '@mui/icons-material';
 import { isLeft } from 'fp-ts/lib/Either';
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
@@ -20,11 +22,11 @@ import {
   updateAuth,
   verifyChannel,
 } from '../../state/creator.commands';
-import { makeStyles } from '../../theme';
+import { YCAITheme } from '../../theme';
 
 const youtubeChannelUrlRegex = /\/channel\/([^/]+)\/?$/;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   box: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(2),

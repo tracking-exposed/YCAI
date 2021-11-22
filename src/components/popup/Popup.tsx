@@ -4,10 +4,12 @@ import {
   Card,
   CardActions,
   CardContent,
-  makeStyles,
   Typography,
-} from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+} from '@mui/material';
+
+import { makeStyles } from '@mui/styles';
+
+import { Alert, AlertTitle } from '@mui/lab';
 import * as QR from 'avenger/lib/QueryResult';
 import { WithQueries } from 'avenger/lib/react';
 import { formatDistance } from 'date-fns';
@@ -18,8 +20,9 @@ import { config } from '../../config';
 import { settings } from '../../state/public.queries';
 import { PopupErrorBox } from './PopupErrorBox';
 import Settings from './Settings';
+import { YCAITheme } from '../../theme';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   container: {
     width: 500,
     padding: theme.spacing(2),
@@ -39,21 +42,6 @@ const useStyles = makeStyles((theme) => ({
     width: '280%',
     maxWidth: 280,
     display: 'block',
-  },
-  link: {
-    color: 'black',
-    textDecoration: 'none',
-    display: 'block',
-  },
-  switchFormControl: {
-    margin: 0,
-  },
-  dashboardButton: {
-    backgroundColor: theme.palette.common.black,
-    padding: theme.spacing(3),
-    '& span': {
-      lineHeight: 1,
-    },
   },
 }));
 
@@ -147,6 +135,13 @@ export const Popup: React.FC = () => {
                   size="large"
                   target="_blank"
                   variant="contained"
+                  sx={(theme) => ({
+                    backgroundColor: theme.palette.common.black,
+                    padding: theme.spacing(3),
+                    '& span': {
+                      lineHeight: 1,
+                    },
+                  })}
                 >
                   {t('dashboard:title')}
                 </Button>
@@ -155,7 +150,6 @@ export const Popup: React.FC = () => {
           )
         )}
       />
-      {/* </Grid> */}
     </Card>
   );
 };

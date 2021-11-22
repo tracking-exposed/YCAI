@@ -1,14 +1,16 @@
-import { ContentCreator } from '@backend/models/ContentCreator';
-import { Avatar, List, ListItem, makeStyles, Typography } from '@material-ui/core';
-import { deepOrange } from '@material-ui/core/colors';
-import * as React from 'react';
+import React from 'react';
 
+import { ContentCreator } from '@backend/models/ContentCreator';
+import { Avatar, List, ListItem, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { deepOrange } from '@mui/material/colors';
+import { YCAITheme } from '../../../theme';
 interface UserListProps {
   users: ContentCreator[];
   onUserClick: (u: ContentCreator) => void;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),

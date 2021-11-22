@@ -1,4 +1,4 @@
-import { Grid, GridSpacing } from '@material-ui/core';
+import { Grid, GridSpacing } from '@mui/material';
 import React from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 

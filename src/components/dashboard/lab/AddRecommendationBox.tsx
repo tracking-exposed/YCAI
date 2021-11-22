@@ -9,13 +9,13 @@ import {
   Button,
   TextField,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   Add as AddIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 
 import { addRecommendationForVideo } from '../../../state/creator.commands';
 import { YCAITheme } from '../../../theme';
@@ -24,18 +24,22 @@ interface AddRecommendationBoxProps {
   videoId: string;
 }
 
-const useStyles = makeStyles<YCAITheme>(theme => ({
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   root: {
     backgroundColor: theme.palette.grey[300],
   },
   textField: {
-    backgroundColor: theme.palette.background.default,
+    position: 'relative',
     flexGrow: 1,
-    '& .MuiFormHelperText-root': {
-      backgroundColor: theme.palette.grey[300],
+    '& .MuiOutlinedInput-root': {
+      backgroundColor: theme.palette.background.default,
     },
     '& textarea': {
       color: theme.palette.text.secondary,
+    },
+    '& p': {
+      bottom: '-1rem',
+      position: 'absolute',
     }
   },
   addButton: {

@@ -2,11 +2,8 @@ import {
   createTheme,
   lighten,
   darken,
-  ThemeProvider,
-  useTheme,
   alpha,
-  makeStyles,
-} from '@material-ui/core/styles';
+} from '@mui/material/styles';
 
 const pink = '#E33180';
 const lightPink = lighten(pink, 0.2);
@@ -85,27 +82,43 @@ export const YCAITheme = createTheme({
       lineHeight: 1.3,
     },
   },
-  overrides: {
-    MuiTabs: {
-      root: {
-        background: pink,
-      },
-    },
+  components: {
     MuiButton: {
-      sizeSmall: {
-        fontSize: '0.8rem',
-      },
-      contained: {
-        color: grey,
-        backgroundColor: lightGrey,
-      },
-      containedPrimary: {
-        color: white,
-      },
-      containedSecondary: {
-        color: white,
-        background: grey,
-      },
+      variants: [{
+        props: {
+          color: 'primary',
+          variant: 'text'
+        },
+        style: {
+          color: `${pink}!important`,
+        }
+      }, {
+        props: {
+          size: 'small',
+        },
+        style: {
+          fontSize: '0.8rem',
+        }
+      }, {
+        props: {
+          color: 'secondary'
+        },
+        style: {
+          color: grey,
+          backgroundColor: lightGrey,
+          ':hover': {
+            backgroundColor: darkGrey,
+            color: white,
+          },
+        }
+      }, {
+        props: {
+          color: 'primary',
+        },
+        style: {
+          color: white,
+        }
+      }],
     },
   },
   palette: {
@@ -151,5 +164,3 @@ export const YCAITheme = createTheme({
 });
 
 export type YCAITheme = typeof YCAITheme;
-
-export { makeStyles, ThemeProvider, useTheme };

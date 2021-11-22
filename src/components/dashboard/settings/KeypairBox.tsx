@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Box,
   Button,
@@ -8,28 +9,31 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-  makeStyles,
   Typography,
-} from '@material-ui/core';
-import CloudDownload from '@material-ui/icons/CloudDownload';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import * as React from 'react';
+} from '@mui/material';
+
+import {
+  VisibilityOff as VisibilityOffIcon,
+  Visibility as VisibilityIcon,
+  CloudDownload,
+} from '@mui/icons-material';
+
+import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import { Keypair, Settings } from '../../../models/Settings';
+import { YCAITheme } from '../../../theme';
 import {
   deleteKeypair,
   downloadTXTFile,
   generateKeypair,
   updateSettings,
 } from '../../../state/public.commands';
-
 interface KeypairBoxProps {
   keypair: Keypair;
   settings: Settings;
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles<YCAITheme>(() => ({
   root: {
     marginBottom: 100,
   },

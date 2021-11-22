@@ -1,8 +1,9 @@
-import { makeStyles } from '@material-ui/core';
-import * as React from 'react';
-import { YCAITheme } from 'theme';
+import React from 'react';
 
+import { makeStyles } from '@mui/styles';
 import c3 from 'c3';
+
+import { YCAITheme } from '../../../theme';
 
 interface Data {
   [key: string]: number[];

@@ -1,13 +1,15 @@
+import React from 'react';
+
 import {
   Box,
   List,
   ListItem,
-  makeStyles,
   Typography,
   useTheme,
   Divider,
-} from '@material-ui/core';
-import * as React from 'react';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+
 import { useTranslation } from 'react-i18next';
 import { CurrentView, doUpdateCurrentView } from 'utils/location.utils';
 import { UserProfileBox } from './UserProfileBox';
@@ -15,9 +17,9 @@ import LabIcon from '../common/icons/LabIcon';
 import AnalyticsIcon from '../common/icons/AnalyticsIcon';
 import SettingsIcon from '../common/icons/SettingsIcon';
 import YCAILogo from 'components/common/YCAILogo';
+import { YCAITheme } from '../../theme';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   routesList: {
     marginTop: 60,
   },

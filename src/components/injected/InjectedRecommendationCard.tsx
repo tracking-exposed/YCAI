@@ -5,16 +5,19 @@ import {
   Grid,
   Link,
   Typography,
-}from '@material-ui/core';
+}from '@mui/material';
+
+import { makeStyles } from '@mui/styles';
 
 import { Recommendation } from '@backend/models/Recommendation';
-import { makeStyles, YCAITheme } from '../../theme';
+import { YCAITheme } from '../../theme';
 import { isYTURL } from '../../utils/yt.utils';
 
 const imgHeight = 100;
 
-const useStyles = makeStyles<YCAITheme>(theme => ({
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   link: {
+    textDecoration: 'none',
     '&:hover': {
       textDecoration: 'none',
     }

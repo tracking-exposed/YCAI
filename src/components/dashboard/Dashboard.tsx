@@ -1,10 +1,9 @@
-import { Typography, useTheme } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { Typography, Grid } from '@mui/material';
+import { makeStyles, useTheme } from '@mui/styles';
 import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';
 import { pipe } from 'fp-ts/lib/function';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { auth, localProfile } from '../../state/creator.queries';
 import { CurrentView, currentView } from '../../utils/location.utils';
@@ -19,7 +18,9 @@ import { LabVideoEdit } from './lab/LabVideoEdit';
 import { ContentCreator } from '@backend/models/ContentCreator';
 import { AuthResponse } from '@backend/models/Auth';
 
-const useStyles = makeStyles((theme) => ({
+import { YCAITheme } from '../../theme';
+
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   root: {
     height: '100%',
     width: '100%',
@@ -39,7 +40,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   auth,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const theme = useTheme<YCAITheme>();
 
   const [currentViewLabel, currentViewSubtitle, currentViewContent] =
     React.useMemo(() => {

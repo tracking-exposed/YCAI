@@ -4,11 +4,12 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Grid,
   Typography,
-  useTheme,
-} from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import CommunityIcon from '@material-ui/icons/GroupOutlined';
+} from '@mui/material';
+
+import { useTheme } from '@mui/styles';
+import { GroupOutlined as CommunityIcon } from '@mui/icons-material';
 import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';
 import * as A from 'fp-ts/lib/Array';
@@ -23,14 +24,14 @@ import { StatsCard } from '../../common/StatsCard';
 import { ADVChannelStatsBox } from './ADVChannelStatsBox';
 import { CCRelatedUserList } from './CCRelatedUserList';
 import { DonutChart } from './DonutChart';
-
+import { YCAITheme } from '../../../theme';
 interface CreatorStatsProps {
   profile?: ContentCreator;
   stats: CreatorStats;
 }
 
 const CreatorStatsPage: React.FC<CreatorStatsProps> = ({ profile, stats }) => {
-  const theme = useTheme();
+  const theme = useTheme<YCAITheme>();
   const { t } = useTranslation();
   const recommendations = React.useMemo(
     () =>

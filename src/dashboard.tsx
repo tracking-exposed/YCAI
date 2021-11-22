@@ -1,6 +1,6 @@
 import './i18n';
 import './resources/global.css';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Dashboard } from './components/dashboard/Dashboard';

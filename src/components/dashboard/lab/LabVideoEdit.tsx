@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { YTVideo } from 'components/common/YTVideo';
 import * as React from 'react';
 import AddRecommendationBox from './AddRecommendationBox';

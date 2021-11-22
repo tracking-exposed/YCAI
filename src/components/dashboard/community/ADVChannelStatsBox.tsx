@@ -1,4 +1,4 @@
-import { Link, List, ListItem, Typography } from '@material-ui/core';
+import { Link, List, ListItem, Typography } from '@mui/material';
 import * as QR from 'avenger/lib/QueryResult';
 import { WithQueries } from 'avenger/lib/react';
 import { ErrorBox } from 'components/common/ErrorBox';

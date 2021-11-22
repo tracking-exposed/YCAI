@@ -1,16 +1,18 @@
-import './i18n';
-import './resources/global.css';
+import React from 'react';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { debounce } from 'lodash';
-import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { ThemeProvider } from '@mui/material/styles';
+
 import { settingsRefetch } from 'state/public.queries';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { YTContributionInfoBox } from './components/injected/YTContributionInfoBox';
 import { YTVideoPage } from './components/injected/YTVideoPage';
 import * as Messages from './models/Messages';
-import { ThemeProvider, YCAITheme } from './theme';
+import './i18n';
+import './resources/global.css';
+import { YCAITheme } from './theme';
 import { bo } from './utils/browser.utils';
 import { GetLogger } from './utils/logger.utils';
 import { Settings } from './models/Settings';

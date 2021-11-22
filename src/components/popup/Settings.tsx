@@ -1,34 +1,24 @@
 import {
   Divider,
-  FormControl,
   FormControlLabel,
   FormLabel,
-  makeStyles,
   Switch,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
+
+import { SxProps } from '@mui/system';
+
+import { makeStyles } from '@mui/styles';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import * as models from '../../models';
 import { generateKeypair, updateSettings } from '../../state/public.commands';
 
-const useStyles = makeStyles((theme) => ({
-  divider: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
-  },
-  smallTitle: {
-    marginTop: 30,
-    paddingBottom: 12,
-  },
-  controlLabel: {
-    alignItems: 'flex-start',
-    marginLeft: 0,
-    marginRight: 0,
-    marginBottom: theme.spacing(2),
-  },
+import { YCAITheme } from '../../theme';
+
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   marginRight: {
-    marginRight: 15,
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -40,10 +30,17 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
   const { t } = useTranslation();
   const classes = useStyles();
 
+  const controlLabel: SxProps<YCAITheme> = (theme) => ({
+    alignItems: 'flex-start',
+    marginLeft: 0,
+    marginRight: 0,
+    marginBottom: theme.spacing(2),
+  });
+
   return (
     <>
       <FormControlLabel
-        className={classes.controlLabel}
+        sx={controlLabel}
         disabled={!settings.active}
         control={
           <Switch
@@ -73,46 +70,44 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
         labelPlacement="end"
       />
 
-      <FormControl component="fieldset">
-        <FormControlLabel
-          className={classes.controlLabel}
-          disabled={!settings.active}
-          control={
-            <Switch
-              className={classes.marginRight}
-              aria-labelledby="switch-independentContributions"
-              color="primary"
-              checked={settings.independentContributions.enable}
-              onChange={(e, enable) => {
-                if (enable) {
-                  void generateKeypair({})();
-                }
+      <FormControlLabel
+        sx={controlLabel}
+        disabled={!settings.active}
+        control={
+          <Switch
+            className={classes.marginRight}
+            aria-labelledby="switch-independentContributions"
+            color="primary"
+            checked={settings.independentContributions.enable}
+            onChange={(e, enable) => {
+              if (enable) {
+                void generateKeypair({})();
+              }
 
-                void updateSettings({
-                  ...settings,
-                  independentContributions: {
-                    ...settings.independentContributions,
-                    enable,
-                  },
-                })();
-              }}
-            />
-          }
-          label={
-            <FormLabel>
-              <Typography variant="h5">
-                {t('settings:contributeToIndependentStatsLabel')}
-              </Typography>
-              <Typography display="block">
-                {t('settings:contributeToIndependentStatsHint')}
-              </Typography>
-              <br />
-              <Divider light />
-            </FormLabel>
-          }
-          labelPlacement="end"
-        />
-      </FormControl>
+              void updateSettings({
+                ...settings,
+                independentContributions: {
+                  ...settings.independentContributions,
+                  enable,
+                },
+              })();
+            }}
+          />
+        }
+        label={
+          <FormLabel>
+            <Typography variant="h5">
+              {t('settings:contributeToIndependentStatsLabel')}
+            </Typography>
+            <Typography display="block">
+              {t('settings:contributeToIndependentStatsHint')}
+            </Typography>
+            <br />
+            <Divider light />
+          </FormLabel>
+        }
+        labelPlacement="end"
+      />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { Video } from '@backend/models/Video';
-import { Button, Box, Grid, Typography } from '@material-ui/core';
+import { Button, Box, Grid, Typography } from '@mui/material';
 import * as Q from 'avenger/lib/Query';
 import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';

@@ -1,4 +1,5 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import * as QR from 'avenger/lib/QueryResult';
 import { WithQueries } from 'avenger/lib/react';
 import * as React from 'react';
@@ -7,9 +8,9 @@ import { LazyFullSizeLoader } from '../../components/common/FullSizeLoader';
 import { Keypair, Settings } from '../../models/Settings';
 import * as dataDonation from '../../providers/dataDonation.provider';
 import { keypair, settingsRefetch } from '../../state/public.queries';
-import { makeStyles } from '../../theme';
+import { YCAITheme } from '../../theme';
 
-const useStyles = makeStyles((props) => ({
+const useStyles = makeStyles<YCAITheme>((props) => ({
   root: {
     display: 'flex',
     border: `2px solid ${props.palette.primary.main}`,

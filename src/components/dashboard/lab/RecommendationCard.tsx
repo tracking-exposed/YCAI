@@ -6,16 +6,16 @@ import {
   IconButton,
   Card,
   Grid,
-} from '@material-ui/core';
+  Typography,
+} from '@mui/material';
 
 import {
   Delete as DeleteIcon,
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 
 import { Recommendation } from '@backend/models/Recommendation';
 import { YCAITheme } from '../../../theme';

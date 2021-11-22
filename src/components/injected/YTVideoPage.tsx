@@ -1,8 +1,17 @@
-import { AppBar, Box, Tabs, Typography } from '@material-ui/core';
-import ContentCreatorIcon from '@material-ui/icons/HealingOutlined';
-import HideIcon from '@material-ui/icons/VisibilityOffOutlined';
-import YTIcon from '@material-ui/icons/YouTube';
-import { makeStyles } from '@material-ui/styles';
+import {
+  AppBar,
+  Box,
+  Tabs,
+  Typography
+} from '@mui/material';
+
+import {
+  HealingOutlined as ContentCreatorIcon,
+  VisibilityOffOutlined as HideIcon,
+  YouTube as YTIcon,
+} from '@mui/icons-material';
+
+import { makeStyles, useTheme } from '@mui/styles';
 import * as QR from 'avenger/lib/QueryResult';
 import { WithQueries } from 'avenger/lib/react';
 import { ErrorBox } from 'components/common/ErrorBox';
@@ -18,15 +27,20 @@ import { GetLogger } from 'utils/logger.utils';
 import { getVideoId } from 'utils/yt.utils';
 import { Tab } from '../common/Tab';
 import { VideoRecommendations } from './VideoRecommendations';
+import { YCAITheme } from '../../theme';
 
 const logger = GetLogger('yt-video-recommendations');
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles<YCAITheme>((theme) => ({
   appBar: {
     marginBottom: 20,
   },
   tab: {
     minWidth: 100,
+    color: theme.palette.grey[200],
+    '&.Mui-selected': {
+      color: theme.palette.primary.contrastText,
+    },
   },
   displayNone: {
     display: 'none',
@@ -106,6 +120,8 @@ export const YTVideoPage: React.FC = () => {
           }
         }, [settings]);
 
+        const theme = useTheme<YCAITheme>();
+
         // do not show this component when extension is not `active` or `ux` is disabled
         if (!settings.active || !settings.enhanceYouTubeExperience) {
           return null;
@@ -120,6 +136,11 @@ export const YTVideoPage: React.FC = () => {
                 aria-label="recommendations tabs"
                 variant="fullWidth"
                 centered
+                TabIndicatorProps={{
+                  style: {
+                    backgroundColor: theme.palette.primary.contrastText,
+                  },
+                }}
               >
                 <Tab
                   className={classes.tab}

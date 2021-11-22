@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, ButtonGroup } from '@material-ui/core';
+import { Box, Button, ButtonGroup } from '@mui/material';
 import { ErrorBox } from 'components/common/ErrorBox';
 import { getDefaultSettings } from 'models/Settings';
 import { useTranslation } from 'react-i18next';

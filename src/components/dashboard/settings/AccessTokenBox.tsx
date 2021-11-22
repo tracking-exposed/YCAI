@@ -10,24 +10,29 @@ import {
   Input,
   InputAdornment,
   InputLabel,
-  makeStyles,
   Typography,
-} from '@material-ui/core';
-import CloudDownload from '@material-ui/icons/CloudDownload';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+} from '@mui/material';
+
+import {
+  VisibilityOff as VisibilityOffIcon,
+  Visibility as VisibilityIcon,
+  CloudDownload,
+} from '@mui/icons-material';
+
+import { makeStyles } from '@mui/styles';
 import * as E from 'fp-ts/lib/Either';
 import { APIError } from 'providers/api.provider';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { assignAccessToken } from '../../../state/creator.commands';
 import { deleteProfile, downloadTXTFile } from '../../../state/public.commands';
+import { YCAITheme } from '../../../theme';
 
 interface AccessTokenBoxProps {
   profile: ContentCreator | null;
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles<YCAITheme>(() => ({
   root: {
     marginBottom: 100,
   },

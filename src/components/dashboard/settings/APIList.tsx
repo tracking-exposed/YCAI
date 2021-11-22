@@ -6,7 +6,7 @@ import {
   ListItemText,
   Typography,
   useTheme
-} from '@material-ui/core';
+} from '@mui/material';
 import * as A from 'fp-ts/lib/Array';
 import { pipe } from 'fp-ts/lib/function';
 import * as R from 'fp-ts/lib/Record';

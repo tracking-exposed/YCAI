@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 
 export const FullSizeLoader: React.FC<{ color?: 'primary' | 'secondary' }> = ({
   color = 'primary',

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import * as QR from 'avenger/lib/QueryResult';
 import { declareQueries } from 'avenger/lib/react';

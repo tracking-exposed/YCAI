@@ -1,5 +1,8 @@
-import { Typography } from '@material-ui/core';
-import MUITab, { TabProps as MUITabProps } from '@material-ui/core/Tab';
+import {
+  Typography,
+  Tab as MUITab,
+  TabProps as MUITabProps
+} from '@mui/material';
 import * as React from 'react';
 
 function a11yProps(index: number): { [key: string]: string } {

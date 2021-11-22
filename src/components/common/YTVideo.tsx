@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Link } from '@material-ui/core';
+import { Card, CardContent, CardMedia, Link } from '@mui/material';
 import * as QR from 'avenger/lib/QueryResult';
 import { WithQueries } from 'avenger/lib/react';
 import React from 'react';

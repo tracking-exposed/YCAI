@@ -1,5 +1,5 @@
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/lab';
 import { config } from '../../config';
 import { APIError } from 'providers/api.provider';
 import * as React from 'react';

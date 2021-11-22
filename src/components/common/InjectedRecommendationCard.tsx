@@ -4,7 +4,7 @@ import {
   CardContent,
   CardHeader,
   Grid,
-}from '@material-ui/core';
+}from '@mui/material';
 
 export interface InjectedRecommendationCardProps {
   url: string;

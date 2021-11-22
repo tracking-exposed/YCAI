@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { TabPanelProps as MUITabPanelProps } from '@material-ui/lab/TabPanel';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
+import { TabPanelProps as MUITabPanelProps } from '@mui/lab';
 
 type TabPanelProps = Omit<MUITabPanelProps, 'value' | 'ref'> &
   (
