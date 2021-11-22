@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(0),
   },
   version:{
-    marginBottom: theme.spacing(4),
+    marginBottom: theme.spacing(5),
   },
   img: {
     width: '280%',
@@ -46,6 +46,13 @@ const useStyles = makeStyles((theme) => ({
   },
   switchFormControl: {
     margin: 0,
+  },
+  dashboardButton: {
+    backgroundColor: theme.palette.common.black,
+    padding: theme.spacing(3),
+    '& span': {
+      lineHeight: 1,
+    },
   },
 }));
 
@@ -132,12 +139,13 @@ export const Popup: React.FC = () => {
               </CardContent>
               <CardActions>
                 <Button
-                  size="medium"
+                  className={classes.dashboardButton}
                   color="primary"
-                  variant="contained"
-                  href={'/index.html'}
-                  target="_blank"
                   fullWidth
+                  href={'/index.html'}
+                  size="large"
+                  target="_blank"
+                  variant="contained"
                 >
                   {t('dashboard:title')}
                 </Button>
