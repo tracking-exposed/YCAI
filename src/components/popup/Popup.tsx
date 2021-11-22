@@ -1,9 +1,9 @@
 import {
+  Box,
   Button,
   Card,
   CardActions,
   CardContent,
-  Grid,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -79,18 +79,20 @@ export const Popup: React.FC = () => {
 
   return (
     <Card className={classes.container}>
-      <Grid className={classes.header} container alignItems="center" align="center">
-        <Grid item xs={12}>
-          <a
-            className={classes.link}
-            href={config.REACT_APP_WEB_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img className={classes.img} src="/ycai-logo.svg" />
-          </a>
-        </Grid>
-      </Grid>
+      <Box
+        className={classes.header}
+        display="flex"
+        justifyContent="center"
+      >
+        <a
+          className={classes.link}
+          href={config.REACT_APP_WEB_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img className={classes.img} src="/ycai-logo.svg" />
+        </a>
+      </Box>
 
       <WithQueries
         queries={{ settings }}
@@ -102,7 +104,13 @@ export const Popup: React.FC = () => {
           ({ settings }): any => {
             const content = (
               <CardContent className={classes.content}>
-                <Grid key="app-version" className={classes.version} item xs={12} align="center">
+                <Box
+                  className={classes.version}
+                  alignItems="center"
+                  display="flex"
+                  justifyContent="center"
+                  key="app-version"
+                >
                   <Typography variant="caption">
                     {t('popup:version', { version, date: timeago })}
                   </Typography>
@@ -113,13 +121,13 @@ export const Popup: React.FC = () => {
                       display="inline"
                       style={{
                         fontWeight: 800,
+                        marginBottom: 0,
                       }}
                     >
-                      {' '}
-                      DEVELOPMENT
+                      &nbsp;DEVELOPMENT
                     </Typography>
                   ) : null}
-                </Grid>
+                </Box>
 
                 <Settings key="settings" settings={settings} />
               </CardContent>
