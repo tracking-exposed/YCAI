@@ -29,11 +29,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   header: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(0),
+  },
+  version:{
+    marginBottom: theme.spacing(4),
   },
   img: {
-    width: '300%',
-    maxWidth: 300,
+    width: '280%',
+    maxWidth: 280,
     display: 'block',
   },
   link: {
@@ -99,7 +102,7 @@ export const Popup: React.FC = () => {
           ({ settings }): any => {
             const content = (
               <CardContent className={classes.content}>
-                <Grid key="app-version" item xs={12} align="center">
+                <Grid key="app-version" className={classes.version} item xs={12} align="center">
                   <Typography variant="caption">
                     {t('popup:version', { version, date: timeago })}
                   </Typography>
@@ -126,7 +129,7 @@ export const Popup: React.FC = () => {
               <CardActions key="actions">
                 <Button
                   size="medium"
-                  color={'black'}
+                  color="primary"
                   variant="contained"
                   href={'/index.html'}
                   target="_blank"

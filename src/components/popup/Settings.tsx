@@ -1,6 +1,4 @@
 import {
-  Box,
-  Button,
   Divider,
   FormControl,
   FormControlLabel,
@@ -8,7 +6,7 @@ import {
   makeStyles,
   Switch,
   Typography,
-  useTheme,
+  /*useTheme,*/
 } from '@material-ui/core';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,8 +15,8 @@ import { generateKeypair, updateSettings } from '../../state/public.commands';
 
 const useStyles = makeStyles((theme) => ({
   divider: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
   },
   smallTitle: {
     marginTop: 30,
@@ -27,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   noMargin: {
     marginLeft: 0,
     marginRight: 0,
+    marginBottom: theme.spacing(2),
   },
   marginRight: {
     marginRight: 15,
@@ -40,7 +39,7 @@ interface SettingsProps {
 const Settings: React.FC<SettingsProps> = ({ settings }) => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const theme = useTheme();
+  /* const theme = useTheme(); */
 
   return (
     <>
@@ -62,16 +61,21 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
         }
         label={
           <FormLabel>
-            <Typography variant="h6">
+            <Typography variant="h5">
               {t('settings:contentCreatorRecommendationLabel')}
             </Typography>
-            <Typography variant="body2" display="block">
+            <Typography variant="body" display="block">
               {t('settings:contentCreatorRecommendationHint')}
             </Typography>
+            <br />
+            <Divider light />
+            <br />
+            <br />
           </FormLabel>
         }
         labelPlacement="end"
       />
+      {/*
       <br />
       <br />
       <FormControlLabel
@@ -104,8 +108,9 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
         labelPlacement="end"
       />
       <br />
-      <br />
-      <Divider className={classes.divider} />
+      <br />       
+      <Divider className={classes.divider} /> */}
+
 
       <FormControl component="fieldset">
         <FormControlLabel
@@ -134,17 +139,19 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
           }
           label={
             <FormLabel>
-              <Typography variant="h6">
+              <Typography variant="h5">
                 {t('settings:contributeToIndependentStatsLabel')}
               </Typography>
-              <Typography variant="body2" display="block">
+              <Typography variant="body" display="block">
                 {t('settings:contributeToIndependentStatsHint')}
               </Typography>
               <br />
+              <Divider light />
             </FormLabel>
           }
           labelPlacement="end"
         />
+        {/*
         {settings.independentContributions.enable ? (
           <FormControl style={{ paddingLeft: 80 }}>
             <FormControlLabel
@@ -180,6 +187,7 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
                 </FormLabel>
               }
             />
+            
             <Box>
               <Button
                 color="primary"
@@ -192,7 +200,7 @@ const Settings: React.FC<SettingsProps> = ({ settings }) => {
               </Button>
             </Box>
           </FormControl>
-        ) : null}
+        ) : null} */}
       </FormControl>
     </>
   );

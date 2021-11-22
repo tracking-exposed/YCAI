@@ -50,8 +50,8 @@ export const YCAITheme = createTheme({
     },
     h5: {
       fontWeight: 600,
-      fontSize: '2rem',
-      marginBottom: 28,
+      fontSize: '1.5rem',
+      marginBottom: 8,
     },
     h6: {
       marginBottom: 4,

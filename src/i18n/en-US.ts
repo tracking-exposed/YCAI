@@ -90,7 +90,7 @@ const resources: CustomTypeOptions['resources'] = {
     url_placeholder: 'https://youtube.com/watch?v=xxxxx',
     url_helper_text: 'Insert a link',
   },
-  dashboard: { title: 'Dashboard' },
+  dashboard: { title: 'Youchoose Creator Studio' },
   popup: { version: 'version {{version}} build {{data}}' },
   statistics: {
     title: 'Statistics',
@@ -113,13 +113,13 @@ const resources: CustomTypeOptions['resources'] = {
     no_video_id: 'No video id found',
   },
   settings: {
-    contentCreatorRecommendationLabel: 'Content Creators',
-    contentCreatorRecommendationHint: 'See suggestions by real authors',
+    contentCreatorRecommendationLabel: 'Enhance Youtube experience',
+    contentCreatorRecommendationHint: 'Show YouChoose pop in the YouTube sidebar',
     communityRecommendationsLabel: 'Community',
     communityRecommendationsHint: 'Coming soon 🌻',
-    contributeToIndependentStatsLabel: 'Independent stats',
+    contributeToIndependentStatsLabel: 'Donate Anonymous Data',
     contributeToIndependentStatsHint:
-      'Donate anonymously what Youtube recommends and advertises you',
+      'Share data about Youtube to help understand the AI',
     contributeToIndependentStatsShowUILabel: 'UI highlight for donation',
     contributeToIndependentStatsShowUIHint:
       'Highlight the UI of collected and donated elements',
