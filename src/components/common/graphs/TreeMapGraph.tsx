@@ -1,12 +1,12 @@
-import { useTheme, makeStyles } from '../../../theme';
+import { Typography } from '@material-ui/core';
 import { Group } from '@vx/group';
 import { hierarchy, Treemap, treemapBinary } from '@vx/hierarchy';
+import { ParentSize } from '@vx/responsive';
 import { scaleLinear } from '@vx/scale';
 import { Text } from '@vx/text';
+import { defaultStyles, TooltipWithBounds, useTooltip } from '@vx/tooltip';
 import React from 'react';
-import { ParentSize } from '@vx/responsive';
-import { useTooltip, useTooltipInPortal, defaultStyles } from '@vx/tooltip';
-import { Typography } from '@material-ui/core';
+import { makeStyles, useTheme } from '../../../theme';
 
 const defaultMargin = { top: 0, left: 0, right: 0, bottom: 0 };
 
@@ -26,6 +26,9 @@ export interface TreeMapProps<T extends Datum> {
 
 const useStyles = makeStyles((theme) => ({
   text: {
+    '& :hover': {
+      cursor: 'pointer',
+    },
     '& tspan': {
       textTransform: 'uppercase',
     },
@@ -54,8 +57,8 @@ const TreeMapGraph = <T extends Datum>({
     showTooltip,
     hideTooltip,
   } = useTooltip<T>();
-  console.log({ tooltipData, tooltipTop, tooltipLeft });
-  const { containerRef, TooltipInPortal } = useTooltipInPortal();
+
+  // const { containerRef, TooltipInPortal } = useTooltipInPortal();
 
   const maxSize = Math.max(...data.children.map((d) => d.size ?? 0));
   const fontSizeScale = scaleLinear<number>({
@@ -83,7 +86,7 @@ const TreeMapGraph = <T extends Datum>({
 
   return width < 10 ? null : (
     <div style={{ position: 'relative' }}>
-      <svg width={width} height={height} ref={containerRef}>
+      <svg width={width} height={height}>
         <rect width={width} height={height} rx={14} fill={'transparent'} />
         <Treemap<typeof data>
           top={margin.top}
@@ -105,6 +108,18 @@ const TreeMapGraph = <T extends Datum>({
                   const fontColor = fontColorScale(node.value ?? 0);
                   const fillColor =
                     colorScale(node.value ?? 0) ?? theme.palette.common.white;
+
+                  const handleMouseMove: React.MouseEventHandler<SVGRectElement> =
+                    (event) => {
+                      const top =
+                        event.clientY - node.y0 - margin.top - nodeHeight / 2;
+                      const left = node.x0 - margin.left - 40 + nodeWidth / 2;
+                      showTooltip({
+                        tooltipData: node.data,
+                        tooltipTop: top,
+                        tooltipLeft: left,
+                      });
+                    };
                   return (
                     <Group
                       key={`node-${i}`}
@@ -120,15 +135,8 @@ const TreeMapGraph = <T extends Datum>({
                           style={{
                             border: `1px solid ${theme.palette.common.black}`,
                           }}
-                          onMouseEnter={(event) => {
-                            const top = node.y0 + nodeHeight;
-                            const left = node.x0 + nodeWidth / 2;
-                            showTooltip({
-                              tooltipData: node.data,
-                              tooltipTop: -top,
-                              tooltipLeft: left,
-                            });
-                          }}
+                          onMouseEnter={handleMouseMove}
+                          onMouseMove={handleMouseMove}
                           onMouseLeave={() => hideTooltip()}
                         />
                       )}
@@ -157,14 +165,14 @@ const TreeMapGraph = <T extends Datum>({
         </Treemap>
       </svg>
       {tooltipOpen && tooltipData && (
-        <TooltipInPortal
+        <TooltipWithBounds
           key={Math.random()}
           className={classes.tooltip}
           top={tooltipTop}
           left={tooltipLeft}
         >
           <Typography variant="subtitle2">{tooltipData.value}</Typography>
-        </TooltipInPortal>
+        </TooltipWithBounds>
       )}
     </div>
   );
