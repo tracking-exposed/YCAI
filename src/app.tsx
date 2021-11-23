@@ -77,9 +77,8 @@ const InjectedApp: React.FC = () => {
       const contributionBoxEl = document.createElement('div');
       contributionBoxEl.id = YC_CONTRIBUTION_INFO_BOX_ID;
       contributionBoxEl.style.position = 'fixed';
-      contributionBoxEl.style.width = '120px';
-      contributionBoxEl.style.textAlign = 'right';
-      contributionBoxEl.style.height = '50px';
+      contributionBoxEl.style.width = '200px';
+      contributionBoxEl.style.height = '30px';
       contributionBoxEl.style.right = '20px';
       contributionBoxEl.style.bottom = '20px';
       contributionBoxEl.style.padding = '4px';

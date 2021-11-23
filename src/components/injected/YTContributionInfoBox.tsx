@@ -5,6 +5,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ErrorBox } from '../../components/common/ErrorBox';
 import { LazyFullSizeLoader } from '../../components/common/FullSizeLoader';
+import { config } from '../../config';
 import { Keypair, Settings } from '../../models/Settings';
 import * as dataDonation from '../../providers/dataDonation.provider';
 import { keypair } from '../../state/public.queries';
@@ -15,6 +16,7 @@ const useStyles = makeStyles((props) => ({
     display: 'flex',
     border: `2px solid ${props.palette.primary.main}`,
     borderRadius: 3,
+    padding: 5,
     backgroundColor: props.palette.common.white,
     width: '100%',
     height: '100%',
@@ -44,29 +46,30 @@ const YTContributionInfoBoxComponent: React.FC<{
     };
   }, [settings]);
 
-  if (state.type === 'idle') {
-    return null;
+  // don't render anything in production
+  if (config.NODE_ENV === 'production') {
+    return ReactDOM.createPortal(null, node);
   }
 
   return ReactDOM.createPortal(
     <Box className={classes.root}>
-      {state.type === 'video-seen' ? (
-        <Typography className={classes.label} variant="h5">
-          Video seen...
-        </Typography>
-      ) : state.type === 'video-sent' ? (
-        <Typography className={classes.label} variant="h5">
-          Video sent!
-        </Typography>
-      ) : state.type === 'adv-seen' ? (
-        <Typography className={classes.label} variant="h5">
-          ADV seen...
-        </Typography>
-      ) : (
-        <Typography className={classes.label} variant="h5">
-          ADV sent...
-        </Typography>
-      )}
+      <Typography
+        variant="subtitle1"
+        style={{ marginBottom: 0, marginRight: 10, fontWeight: 800 }}
+        display="inline"
+        color="primary"
+      >
+        This is only visible in DEVELOPMENT
+      </Typography>
+      <Typography className={classes.label} variant="body1" display="inline">
+        {state.type === 'video-seen'
+          ? 'Video seen...'
+          : state.type === 'video-sent'
+          ? 'Video sent!'
+          : state.type === 'adv-seen'
+          ? 'ADV seen...'
+          : 'ADV sent...'}
+      </Typography>
     </Box>,
     node
   );

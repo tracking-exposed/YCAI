@@ -297,12 +297,9 @@ function manageNodes(
     }
   }
 
-  // this to highlight what is collected as fragments
-  if (
-    settings.independentContributions.enable &&
-    settings.independentContributions.showUI
-  ) {
-    const stroke = config.NODE_ENV === 'development' ? '5px' : '1px';
+  // highligh collected fragments in development
+  if (config.NODE_ENV === 'development') {
+    const stroke = '3px';
     const color = command.color ?? 'red';
     selected.style.border = `${stroke} solid ${color}`;
     selected.setAttribute(selectorName, 'true');
