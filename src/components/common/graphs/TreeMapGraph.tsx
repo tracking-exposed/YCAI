@@ -5,6 +5,8 @@ import { scaleLinear } from '@vx/scale';
 import { Text } from '@vx/text';
 import React from 'react';
 import { ParentSize } from '@vx/responsive';
+import { useTooltip, useTooltipInPortal, defaultStyles } from '@vx/tooltip';
+import { Typography } from '@material-ui/core';
 
 const defaultMargin = { top: 0, left: 0, right: 0, bottom: 0 };
 
@@ -22,11 +24,17 @@ export interface TreeMapProps<T extends Datum> {
   data: T;
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   text: {
     '& tspan': {
       textTransform: 'uppercase',
     },
+  },
+  tooltip: {
+    ...(defaultStyles as any),
+    minWidth: 60,
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
   },
 }));
 
@@ -38,6 +46,17 @@ const TreeMapGraph = <T extends Datum>({
 }: TreeMapProps<T>): React.ReactElement | null => {
   const theme = useTheme();
   const classes = useStyles();
+  const {
+    tooltipOpen,
+    tooltipData,
+    tooltipLeft,
+    tooltipTop,
+    showTooltip,
+    hideTooltip,
+  } = useTooltip<T>();
+  console.log({ tooltipData, tooltipTop, tooltipLeft });
+  const { containerRef, TooltipInPortal } = useTooltipInPortal();
+
   const maxSize = Math.max(...data.children.map((d) => d.size ?? 0));
   const fontSizeScale = scaleLinear<number>({
     domain: [0, maxSize],
@@ -63,77 +82,91 @@ const TreeMapGraph = <T extends Datum>({
   const root = hierarchy(data).sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
 
   return width < 10 ? null : (
-    <svg width={width} height={height}>
-      <rect width={width} height={height} rx={14} fill={'transparent'} />
-      <Treemap<typeof data>
-        top={margin.top}
-        root={root}
-        size={[xMax, yMax]}
-        tile={treemapBinary}
-        round
-      >
-        {(treemap) => (
-          <Group>
-            {treemap
-              .descendants()
-              .reverse()
-              .map((node, i) => {
-                const nodeWidth = node.x1 - node.x0;
-                const nodeHeight = node.y1 - node.y0;
+    <div style={{ position: 'relative' }}>
+      <svg width={width} height={height} ref={containerRef}>
+        <rect width={width} height={height} rx={14} fill={'transparent'} />
+        <Treemap<typeof data>
+          top={margin.top}
+          root={root}
+          size={[xMax, yMax]}
+          tile={treemapBinary}
+          round
+        >
+          {(treemap) => (
+            <Group>
+              {treemap
+                .descendants()
+                .reverse()
+                .map((node, i) => {
+                  const nodeWidth = node.x1 - node.x0;
+                  const nodeHeight = node.y1 - node.y0;
 
-                const fontSize = fontSizeScale(node.value ?? 0);
-                const fontColor = fontColorScale(node.value ?? 0);
-                const fillColor =
-                  colorScale(node.value ?? 0) ?? theme.palette.common.white;
-                return (
-                  <Group
-                    key={`node-${i}`}
-                    top={node.y0 + margin.top}
-                    left={node.x0 + margin.left}
-                  >
-                    {/* {node.depth === 0 && (
-                    <rect
-                      width={nodeWidth}
-                      height={nodeHeight}
-                      strokeWidth={4}
-                      fill={'transparent'}
-                    />
-                  )} */}
-                    {node.depth === 1 && (
-                      <rect
-                        width={nodeWidth}
-                        height={nodeHeight}
-                        strokeWidth={4}
-                        fill={fillColor}
-                        style={{
-                          border: `1px solid ${theme.palette.common.black}`,
-                        }}
-                      />
-                    )}
-                    {node.depth === 1 && (
-                      <Text
-                        x={nodeWidth / 2}
-                        y={nodeWidth / 2}
-                        className={classes.text}
-                        width={nodeWidth}
-                        fontFamily={theme.typography.fontFamily}
-                        fontSize={fontSize}
-                        fontWeight={600}
-                        fill={fontColor}
-                        textAnchor="middle"
-                        verticalAnchor="middle"
-                        lineHeight="100%"
-                      >
-                        {node.data.id}
-                      </Text>
-                    )}
-                  </Group>
-                );
-              })}
-          </Group>
-        )}
-      </Treemap>
-    </svg>
+                  const fontSize = fontSizeScale(node.value ?? 0);
+                  const fontColor = fontColorScale(node.value ?? 0);
+                  const fillColor =
+                    colorScale(node.value ?? 0) ?? theme.palette.common.white;
+                  return (
+                    <Group
+                      key={`node-${i}`}
+                      top={node.y0 + margin.top}
+                      left={node.x0 + margin.left}
+                    >
+                      {node.depth === 1 && (
+                        <rect
+                          width={nodeWidth}
+                          height={nodeHeight}
+                          strokeWidth={4}
+                          fill={fillColor}
+                          style={{
+                            border: `1px solid ${theme.palette.common.black}`,
+                          }}
+                          onMouseEnter={(event) => {
+                            const top = node.y0 + nodeHeight;
+                            const left = node.x0 + nodeWidth / 2;
+                            showTooltip({
+                              tooltipData: node.data,
+                              tooltipTop: -top,
+                              tooltipLeft: left,
+                            });
+                          }}
+                          onMouseLeave={() => hideTooltip()}
+                        />
+                      )}
+                      {node.depth === 1 && (
+                        <Text
+                          x={nodeWidth / 2}
+                          y={nodeWidth / 2}
+                          className={classes.text}
+                          width={nodeWidth}
+                          fontFamily={theme.typography.fontFamily}
+                          fontSize={fontSize}
+                          fontWeight={600}
+                          fill={fontColor}
+                          textAnchor="middle"
+                          verticalAnchor="middle"
+                          lineHeight="100%"
+                        >
+                          {node.data.id}
+                        </Text>
+                      )}
+                    </Group>
+                  );
+                })}
+            </Group>
+          )}
+        </Treemap>
+      </svg>
+      {tooltipOpen && tooltipData && (
+        <TooltipInPortal
+          key={Math.random()}
+          className={classes.tooltip}
+          top={tooltipTop}
+          left={tooltipLeft}
+        >
+          <Typography variant="subtitle2">{tooltipData.value}</Typography>
+        </TooltipInPortal>
+      )}
+    </div>
   );
 };
 

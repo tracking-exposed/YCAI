@@ -3,7 +3,7 @@ import * as QR from 'avenger/lib/QueryResult';
 import { WithQueries } from 'avenger/lib/react';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { creatorADVStats } from '../../../state/creator.queries';
+import { creatorADVStatsMocked } from '../../../state/creator.queries';
 import { makeStyles } from '../../../theme';
 import { ErrorBox } from '../../common/ErrorBox';
 import { LazyFullSizeLoader } from '../../common/FullSizeLoader';
@@ -31,7 +31,7 @@ export const ADVChannelStatsBox: React.FC = () => {
       </Typography>
       <WithQueries
         queries={{
-          creatorADVStats: creatorADVStats,
+          creatorADVStats: creatorADVStatsMocked,
         }}
         render={QR.fold(LazyFullSizeLoader, ErrorBox, ({ creatorADVStats }) => {
           const treeData = {
